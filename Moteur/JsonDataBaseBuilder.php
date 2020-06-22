@@ -57,7 +57,11 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
             break;
           case "date":
             // Uniformisation de la date
-            $timestampExact = strtotime($pieces[1]);
+            $timestampExact = strtotime(trim($pieces[1]));
+              //parfois strtotime présente un bug de transcription de date, dans ce cas on remplace les / par des tirets
+              if ($timestampExact === FALSE) {
+                  $timestampExact = strtotime(str_replace('/', '-', trim($pieces[1])));
+              }
             break;
           case "description":
             $description = mb_convert_encoding(trim($pieces[1]), $encodageUtilise, $encodageUtilise);
