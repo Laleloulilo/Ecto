@@ -158,6 +158,9 @@ function connaitreDateDerniereModificationDossier($dossier)
     foreach ($iterator as $fileinfo) {
         if ($fileinfo->isFile() && $fileinfo->getMTime() > $mtime) {
             $mtime = $fileinfo->getMTime();
+        }else if($fileinfo->isDir() && $fileinfo->getFilename()!=".." && $fileinfo->getFilename()!="." ){
+            $tempsdossier = connaitreDateDerniereModificationDossier($dossier."/".$fileinfo->getFilename());
+            $mtime = max($mtime,$tempsdossier);
         }
     }
     return $mtime;
