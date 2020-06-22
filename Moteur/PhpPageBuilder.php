@@ -37,7 +37,7 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
                             </small>
 
                         </h2>
-                        <small><?= $enTeteArticleBlog['date'] ?> • <?= $enTeteArticleBlog['categorie'] ?>
+                        <small><?= $enTeteArticleBlog['date'] ?> • <em><?= $enTeteArticleBlog['categorie'] ?></em>
                             • <?= $enTeteArticleBlog['nbMots'] ?></small>
                     </header>
                     <p><?= $enTeteArticleBlog['description'] ?></p>
@@ -76,7 +76,7 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
                 $categorie = $json_data['enTete']['categorie'];
 
                 if ($categorie != null) {
-                    $categorie = " • " . $categorie;
+                    $categorie = " • <em>" . $categorie."</em>";
                 }
                 $sousTitre = "";
                 if ($json_data['enTete']['formatArticle']) {

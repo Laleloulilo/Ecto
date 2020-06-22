@@ -5,7 +5,7 @@ class Constante
 {
     const MODE_DEBUG = false;
     const REDIRECTION_HTTPS = false;
-    const CATEGORIE_PAR_DEFAUT = "CatégorieDéfaut";
+    const CATEGORIE_PAR_DEFAUT = "Notes";
     const LOCALISATION_TEMPLATE = '../Moteur/Template/template.php';
     const LOCALISATION_HEADER_TEMPLATE = '../Moteur/Template/header.php';
     const LOCALISATION_FOOTER_TEMPLATE = '../Moteur/Template/footer.php';
@@ -23,7 +23,7 @@ class Constante
     const REPERTOIRE_RENDU_IMAGE = "../Rendu/Images";
     const REPERTOIRE_IMAGE = "Images";
     const NOM_FICHIER_SITEMAP = "sitemap.xml";
-    const MOT_PAR_MINUTE = 260;
+    const MOT_PAR_MINUTE = 200;
     //Gestion des titres
     const NOM_DU_SITE = "Ecto";
     const NOM_PAGE_ACCUEIL = "Accueil";
@@ -38,7 +38,7 @@ class Constante
     const ZONE_TEMPORELLE_HEURE = "fr_FR";
     //Pour controle théorique fichier markdown
     const NOMBRE_BLOC_FICHIER_MARKDOWN = 2; //Ici le bloc d'en-tête et le bloc de contenu
-    const DELIMITEUR_BLOCS_MARKDOWN = "===";
+    const DELIMITEUR_BLOCS_MARKDOWN = "---";
     const NOM_FICHIER_VERIFICATION_TIMESTAMP = "../Moteur/timestamp.php";
     const NOMBRE_DE_SECONDES_AVANT_MISE_A_JOUR = 0;
 }
