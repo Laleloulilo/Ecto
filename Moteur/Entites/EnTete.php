@@ -9,17 +9,11 @@ class EnTete
   public $url;
   public $nbMots;
   public $timestamp_date;
+  public $categorie;
+  public $formatArticle;
+  public $formatPage;
 
-  /**
-   * EnTete constructor.
-   * @param $date
-   * @param $titre
-   * @param $description
-   * @param $url
-   * @param $nbMots
-   * @param $timestamp_date
-   */
-  public function __construct($date, $titre, $description, $url, $nbMots, $timestamp_date)
+  public function __construct($date, $titre, $description, $url, $nbMots, $timestamp_date,$categorie,$formatPage,$formatArticle)
   {
     $this->date = $date;
     $this->titre = $titre;
@@ -27,6 +21,9 @@ class EnTete
     $this->url = $url;
     $this->nbMots = $nbMots;
     $this->timestamp_date = $timestamp_date;
+    $this->categorie=$categorie;
+    $this->formatPage=$formatPage;
+    $this->formatArticle=$formatArticle;
   }
 
   public function getDate()
@@ -88,5 +85,41 @@ class EnTete
   {
     $this->timestamp_date = $timestamp_date;
   }
+
+    public function getCategorie()
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie($categorie)
+    {
+        $this->categorie = $categorie;
+    }
+
+    public function getFormatArticle()
+    {
+        return $this->formatArticle;
+    }
+
+    public function setFormatArticle($formatArticle)
+    {
+        $this->formatArticle = $formatArticle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFormatPage()
+    {
+        return $this->formatPage;
+    }
+
+    /**
+     * @param mixed $formatPage
+     */
+    public function setFormatPage($formatPage)
+    {
+        $this->formatPage = $formatPage;
+    }
 
 }

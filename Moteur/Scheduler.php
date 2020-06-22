@@ -17,7 +17,7 @@ function processusGlobalGenerationSite()
         nettoyageEtSetupDossier(Constante::REPERTOIRE_DESTINATION_JSON);
         nettoyageEtSetupDossier(Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
         echo Constante::MODE_DEBUG === true ? "On formate les pages d'erreur en json <br/>" : null;
-        traiterRepertoireJsonArticleMarkdown(Constante::REPERTOIRE_PAGES_ERREUR, Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, true);
+        traiterRepertoireJsonArticleMarkdown(Constante::REPERTOIRE_PAGES_ERREUR, Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, true,true);
         echo Constante::MODE_DEBUG === true ? "On formate les articles en json <br/>" : null;
         traiterRepertoireJsonArticleMarkdown(Constante::REPERTOIRE_BILLETS, Constante::REPERTOIRE_DESTINATION_JSON);
         echo Constante::MODE_DEBUG === true ? "On crée le listing des articles <br/>" : null;

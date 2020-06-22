@@ -22,21 +22,22 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
     <H1 id="titre_accueil"><?php echo Constante::NOM_DU_SITE ?></H1>
     <p class="sous-titre lead"><?php echo Constante::DESCRIPTION_PAGE_ACCUEIL ?></p>
     <?php
-        foreach ($json_data as $enTeteArticleBlog) 
+        foreach ($json_data as $enTeteArticleBlog)
         {
-           if (array_key_exists('titre', $enTeteArticleBlog) 
-               && array_key_exists('url', $enTeteArticleBlog) 
-               && array_key_exists('date', $enTeteArticleBlog) 
-               && array_key_exists('nbMots', $enTeteArticleBlog)) {
+           if (array_key_exists('titre', $enTeteArticleBlog)
+               && array_key_exists('url', $enTeteArticleBlog)
+               && array_key_exists('date', $enTeteArticleBlog)
+               && array_key_exists('nbMots', $enTeteArticleBlog)
+               && array_key_exists('categorie', $enTeteArticleBlog)) {
                     ?>
     <article>
     	<header>
     		<h2>
     			<small> <a href="<?= $enTeteArticleBlog['url'] . '.' . "php" ?>"><?= $enTeteArticleBlog['titre'] ?></a>
     	</small>
-    
+
     </h2>
-    <small><?= $enTeteArticleBlog['date'] ?> • <?= $enTeteArticleBlog['nbMots'] ?></small>
+    <small><?= $enTeteArticleBlog['date'] ?> • <?= $enTeteArticleBlog['categorie'] ?> • <?= $enTeteArticleBlog['nbMots'] ?></small>
     </header>
     <p><?= $enTeteArticleBlog['description'] ?></p>
     </article>
@@ -71,6 +72,17 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
 
             if (array_key_exists('enTete', $json_data) && array_key_exists('contenu', $json_data)) {
                 $titre = $json_data['enTete']['titre'] . " : " . Constante::NOM_DU_SITE;
+                $categorie=$json_data['enTete']['categorie'];
+
+                if ($categorie != null) {
+                    $categorie=" • " . $categorie;
+                }
+                $sousTitre="";
+                if($json_data['enTete']['formatArticle']){
+                    $sousTitre="<small>".$json_data['enTete']['date'].$categorie." • ".$json_data['enTete']['nbMots']."</small>";
+                }else if($json_data['enTete']['formatPage']){
+                    $sousTitre="";
+                }
 
                 ob_start();
                 ?>
@@ -81,7 +93,7 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
                 <article>
                 	<header>
                 		<h1><?= $json_data['enTete']['titre'] ?></h1>
-                		<small><?= $json_data['enTete']['date'] ?> • <?= $json_data['enTete']['nbMots'] ?></small>
+                		<?= $sousTitre?>
                 	</header>
                 	<p><?= $json_data['contenu'] ?></p>
                 </article>

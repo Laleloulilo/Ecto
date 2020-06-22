@@ -5,6 +5,7 @@ class Constante
 {
     const MODE_DEBUG = false;
     const REDIRECTION_HTTPS = false;
+    const CATEGORIE_PAR_DEFAUT = "CatégorieDéfaut";
     const LOCALISATION_TEMPLATE='../Moteur/Template/template.php';
     const LOCALISATION_HEADER_TEMPLATE = '../Moteur/Template/header.php';
     const LOCALISATION_FOOTER_TEMPLATE = '../Moteur/Template/footer.php';

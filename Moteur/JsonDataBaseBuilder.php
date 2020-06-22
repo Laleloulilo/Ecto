@@ -1,6 +1,6 @@
 <?php
 
-function traiterRepertoireJsonArticleMarkdown($dossierSource, $dossierDestinationRendu, $EstDossierPageErreur = false)
+function traiterRepertoireJsonArticleMarkdown($dossierSource, $dossierDestinationRendu, $estDossierPageErreur = false, $estPage=false)
 {
   // Nettoyage de la destination
     echo Constante::MODE_DEBUG === true ? "Je check si le dossier existe. <br>" : null;
@@ -9,13 +9,25 @@ function traiterRepertoireJsonArticleMarkdown($dossierSource, $dossierDestinatio
   nettoyageDossierDestinationHorsSousDossier($dossierDestinationRendu);
   // Listing des fichiers à traiter.
   $repertoire = opendir($dossierSource); // On définit le répertoire dans lequel on souhaite travailler.
-  while (false !== ($nomFichier = readdir($repertoire))) {
-    controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $dossierDestinationRendu, $EstDossierPageErreur);
+  while (false !== ($nomItem = readdir($repertoire))) {
+
+      if($nomItem!="." && $nomItem!=".." && is_dir($dossierSource."/".$nomItem)){
+          //Si un fichier MD est présent dans un sous-répertoire, ce sous répertoire deviendra sa catégorie
+          //Ecto ne prend pas en charge les repertoires enfants multiples, seul le premier niveau est analysé
+          $dossierEnfant=$dossierSource."/".$nomItem;
+          $repertoireEnfant = opendir($dossierEnfant); // On définit le répertoire dans lequel on souhaite travailler.
+          while (false !== ($nomEnfant = readdir($repertoireEnfant))) {
+              controlerEtFormaterJsonArticleMarkdown($nomEnfant, $dossierEnfant, $dossierDestinationRendu, $nomItem, $estPage, $estDossierPageErreur);
+          }
+          closedir($repertoireEnfant); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
+      }else{
+          controlerEtFormaterJsonArticleMarkdown($nomItem, $dossierSource, $dossierDestinationRendu, Constante::CATEGORIE_PAR_DEFAUT, $estPage, $estDossierPageErreur);
+      }
   }
   closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
 }
 
-function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $dossierDestinationRendu, $EstDossierPageErreur = false)
+function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $dossierDestinationRendu,$categorie, $estPage, $EstDossierPageErreur = false )
 {
   $Parsedown = new ParsedownExtra();
 
@@ -70,6 +82,8 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
       }
     }
     if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $EstDossierPageErreur)) {
+    if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $EstDossierPageErreur)) {
+
       //Parfois les fichiers embarquent plusieurs "---" car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
       $contenuMD = explode(Constante::DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, Constante::NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
       $articleAParser = mb_convert_encoding($contenuMD[2], $encodageUtilise, $encodageUtilise);
@@ -82,25 +96,30 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
       $timestampFormate = formaterDateArticle($timestampExact);
       $url = transformerTitreEnUrlValide($titre);
       // création de l'en-tête
-      $entete = new EnTete($timestampFormate, $titre, $description, $url, $nbMots, $timestampExact);
+      $estArticle=!$estPage;
+      $entete = new EnTete($timestampFormate, $titre, $description, $url, $nbMots, $timestampExact, $categorie, $estPage, $estArticle);
       // Création de l'obet article
       $article = new Article($entete, $contenuEditorial);
       // Enregistrement de l'article
       $fichierArticle = fopen($dossierDestinationRendu . '/' . $url . '.' . "json", 'w');
-      fwrite($fichierArticle, json_encode($article, JSON_THROW_ON_ERROR));
+      fwrite($fichierArticle, json_encode($article));
+      // TODO : JSON_THROW_ON_ERROR et gestion de l'exception
       fclose($fichierArticle);
     }
   }
 }
 
-function controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $EstDossierPageErreur = false)
+function controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $estDossierPageErreur = false)
 {
-  if ($EstDossierPageErreur && $titre != "404" && $titre != "403") {
+    $infoIncompletes= empty($titre) || empty($timestampExact) || empty($description) || !is_bool($estPage);
+  if ($estDossierPageErreur && $titre != "404" && $titre != "403") {
     //Dans le cas d'une page d'erreur seules certains titres sont pertinents (404,403 dans un premier temps)
     return false;
-  }
-  if (empty($titre) || empty($timestampExact) || empty($description)) {
-    return false;
+  }elseif ($infoIncompletes){
+      return false;
+  }elseif (!$estDossierPageErreur && strlen($titre)==3 && is_numeric($titre)){
+      // On interdit tous les noms d'articles de trois chiffres pour éviter les doublons avec les pages d'erreurs
+      return false;
   }
   return true;
 }
