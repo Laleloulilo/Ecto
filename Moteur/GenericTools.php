@@ -8,7 +8,7 @@ function nettoyageDossierDestinationHorsSousDossier($dossierDestination)
         $chemin = $dossierDestination . "/" . $fichier; // On définit le chemin du fichier à effacer.
 
         // Si le fichier n'est pas un répertoire…
-        if ($fichier != ".." && $fichier != "." && ! is_dir($fichier)) {
+        if ($fichier != ".." && $fichier != "." && !is_dir($fichier)) {
             unlink($chemin); // On efface.
         }
     }
@@ -110,10 +110,10 @@ function copierDossierEtSousDossier($origine, $destination)
                 dossierExistantOuLeCreer($destination . "/" . $val);
                 copierDossierEtSousDossier($origine . "/" . $val, $destination . "/" . $val);
             } else {
-                $file_tot ++;
+                $file_tot++;
                 if (copy($origine . "/" . $val, $destination . "/" . $val)) {
-                    $file ++;
-                } else if (! file_exists($origine . "/" . $val)) {
+                    $file++;
+                } else if (!file_exists($origine . "/" . $val)) {
                     echo $origine . "/" . $val;
                 }
             }
@@ -124,10 +124,10 @@ function copierDossierEtSousDossier($origine, $destination)
 
 function nettoyageDossierDestinationIncluantSousDossier($directory, $empty = true)
 {
-    if (substr($directory, - 1) == "/") {
-        $directory = substr($directory, 0, - 1);
+    if (substr($directory, -1) == "/") {
+        $directory = substr($directory, 0, -1);
     }
-    if (! file_exists($directory) || ! is_dir($directory) || ! is_readable($directory)) {
+    if (!file_exists($directory) || !is_dir($directory) || !is_readable($directory)) {
         return false;
     } else {
         $directoryHandle = opendir($directory);
@@ -143,7 +143,7 @@ function nettoyageDossierDestinationIncluantSousDossier($directory, $empty = tru
             }
         }
         closedir($directoryHandle);
-        if (! $empty && ! rmdir($directory)) {
+        if (!$empty && !rmdir($directory)) {
             return false;
         }
         return true;
@@ -157,7 +157,7 @@ function connaitreDateDerniereModificationDossier($dossier)
     $mtime = 0;
     foreach ($iterator as $fileinfo) {
         if ($fileinfo->isFile() && $fileinfo->getMTime() > $mtime) {
-                $mtime = $fileinfo->getMTime();
+            $mtime = $fileinfo->getMTime();
         }
     }
     return $mtime;

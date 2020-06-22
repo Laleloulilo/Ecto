@@ -15,39 +15,40 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
     if (file_exists($chemin)) {
         $json = file_get_contents($chemin);
         $json_data = json_decode($json, true);
-    
+
         $titre = Constante::NOM_PAGE_ACCUEIL . " : " . Constante::NOM_DU_SITE;
         ob_start();
         ?>
-    <H1 id="titre_accueil"><?php echo Constante::NOM_DU_SITE ?></H1>
-    <p class="sous-titre lead"><?php echo Constante::DESCRIPTION_PAGE_ACCUEIL ?></p>
-    <?php
-        foreach ($json_data as $enTeteArticleBlog)
-        {
-           if (array_key_exists('titre', $enTeteArticleBlog)
-               && array_key_exists('url', $enTeteArticleBlog)
-               && array_key_exists('date', $enTeteArticleBlog)
-               && array_key_exists('nbMots', $enTeteArticleBlog)
-               && array_key_exists('categorie', $enTeteArticleBlog)) {
-                    ?>
-    <article>
-    	<header>
-    		<h2>
-    			<small> <a href="<?= $enTeteArticleBlog['url'] . '.' . "php" ?>"><?= $enTeteArticleBlog['titre'] ?></a>
-    	</small>
+        <H1 id="titre_accueil"><?php echo Constante::NOM_DU_SITE ?></H1>
+        <p class="sous-titre lead"><?php echo Constante::DESCRIPTION_PAGE_ACCUEIL ?></p>
+        <?php
+        foreach ($json_data as $enTeteArticleBlog) {
+            if (array_key_exists('titre', $enTeteArticleBlog)
+                && array_key_exists('url', $enTeteArticleBlog)
+                && array_key_exists('date', $enTeteArticleBlog)
+                && array_key_exists('nbMots', $enTeteArticleBlog)
+                && array_key_exists('categorie', $enTeteArticleBlog)) {
+                ?>
+                <article>
+                    <header>
+                        <h2>
+                            <small> <a
+                                    href="<?= $enTeteArticleBlog['url'] . '.' . "php" ?>"><?= $enTeteArticleBlog['titre'] ?></a>
+                            </small>
 
-    </h2>
-    <small><?= $enTeteArticleBlog['date'] ?> • <?= $enTeteArticleBlog['categorie'] ?> • <?= $enTeteArticleBlog['nbMots'] ?></small>
-    </header>
-    <p><?= $enTeteArticleBlog['description'] ?></p>
-    </article>
-    <?php
+                        </h2>
+                        <small><?= $enTeteArticleBlog['date'] ?> • <?= $enTeteArticleBlog['categorie'] ?>
+                            • <?= $enTeteArticleBlog['nbMots'] ?></small>
+                    </header>
+                    <p><?= $enTeteArticleBlog['description'] ?></p>
+                </article>
+                <?php
             }
         }
         $contenu = ob_get_clean();
         $description = Constante::DESCRIPTION_PAGE_ACCUEIL;
         ob_start();
-        require (Constante::LOCALISATION_TEMPLATE);
+        require(Constante::LOCALISATION_TEMPLATE);
         $corpsPage = ob_get_clean();
         $header = file_get_contents(Constante::LOCALISATION_HEADER_TEMPLATE);
         $footer = file_get_contents(Constante::LOCALISATION_FOOTER_TEMPLATE);
@@ -72,37 +73,37 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
 
             if (array_key_exists('enTete', $json_data) && array_key_exists('contenu', $json_data)) {
                 $titre = $json_data['enTete']['titre'] . " : " . Constante::NOM_DU_SITE;
-                $categorie=$json_data['enTete']['categorie'];
+                $categorie = $json_data['enTete']['categorie'];
 
                 if ($categorie != null) {
-                    $categorie=" • " . $categorie;
+                    $categorie = " • " . $categorie;
                 }
-                $sousTitre="";
-                if($json_data['enTete']['formatArticle']){
-                    $sousTitre="<small>".$json_data['enTete']['date'].$categorie." • ".$json_data['enTete']['nbMots']."</small>";
-                }else if($json_data['enTete']['formatPage']){
-                    $sousTitre="";
+                $sousTitre = "";
+                if ($json_data['enTete']['formatArticle']) {
+                    $sousTitre = "<small>" . $json_data['enTete']['date'] . $categorie . " • " . $json_data['enTete']['nbMots'] . "</small>";
+                } else if ($json_data['enTete']['formatPage']) {
+                    $sousTitre = "";
                 }
 
                 ob_start();
                 ?>
                 <H2 id="titre_accueil">
-                	<a href=<?php echo'"'. Constante::ADRESSE_EXACTE_SITE.'"' ?>><?php echo Constante::NOM_DU_SITE ?></a>
+                    <a href=<?php echo '"' . Constante::ADRESSE_EXACTE_SITE . '"' ?>><?php echo Constante::NOM_DU_SITE ?></a>
                 </H2>
                 <p class="sous-titre lead"><?php echo Constante::DESCRIPTION_PAGE_ACCUEIL ?></p>
                 <article>
-                	<header>
-                		<h1><?= $json_data['enTete']['titre'] ?></h1>
-                		<?= $sousTitre?>
-                	</header>
-                	<p><?= $json_data['contenu'] ?></p>
+                    <header>
+                        <h1><?= $json_data['enTete']['titre'] ?></h1>
+                        <?= $sousTitre ?>
+                    </header>
+                    <p><?= $json_data['contenu'] ?></p>
                 </article>
                 <?php
 
                 $contenu = ob_get_clean();
                 ob_start();
                 $description = $json_data['enTete']['description'];
-                require (Constante::LOCALISATION_TEMPLATE);
+                require(Constante::LOCALISATION_TEMPLATE);
                 $corpsPage = ob_get_clean();
                 $header = file_get_contents(Constante::LOCALISATION_HEADER_TEMPLATE);
                 $footer = file_get_contents(Constante::LOCALISATION_FOOTER_TEMPLATE);
@@ -226,17 +227,17 @@ function creationRobotsTxT($dossierDestinationRendu)
     $dir = "../";
     // si le dossier racine existe (ce qui semble évident) et qu'il contient quelque chose
     if (is_dir($dir) && $dh = opendir($dir)) {
-            // boucler tant que quelque chose est trouve
-            while (($file = readdir($dh)) !== false) {
+        // boucler tant que quelque chose est trouve
+        while (($file = readdir($dh)) !== false) {
 
-                // affiche le nom et le type si ce n'est pas un element du systeme
-                if (is_dir($dir . $file) && $file != '.' && $file != '..' && $file != $dossierDestinationRendu) {
-                    // on interdit le parcours de tous les dossiers hormis celui de rendu
-                    $robotsTxT .= "Disallow: /" . $file . "/" . "\n";
-                }
+            // affiche le nom et le type si ce n'est pas un element du systeme
+            if (is_dir($dir . $file) && $file != '.' && $file != '..' && $file != $dossierDestinationRendu) {
+                // on interdit le parcours de tous les dossiers hormis celui de rendu
+                $robotsTxT .= "Disallow: /" . $file . "/" . "\n";
             }
-            // on ferme la connection
-            closedir($dh);
+        }
+        // on ferme la connection
+        closedir($dh);
     }
     // Le nom du fichier robots.txt est imposé et standard
     $fichierRobotsTxT = fopen($dossierDestinationRendu . '/' . 'robots.txt', 'w');

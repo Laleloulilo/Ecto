@@ -1,12 +1,12 @@
 <?php
-require_once ('Parsedown.php');
-require_once ('ParsedownExtra.php');
-require_once ('Constante.php');
-require_once ('Entites/EnTete.php');
-require_once ('Entites/Article.php');
-require_once ('JsonDataBaseBuilder.php');
-require_once ('PhpPageBuilder.php');
-require_once ('GenericTools.php');
+require_once('Parsedown.php');
+require_once('ParsedownExtra.php');
+require_once('Constante.php');
+require_once('Entites/EnTete.php');
+require_once('Entites/Article.php');
+require_once('JsonDataBaseBuilder.php');
+require_once('PhpPageBuilder.php');
+require_once('GenericTools.php');
 
 function processusGlobalGenerationSite()
 {
@@ -17,7 +17,7 @@ function processusGlobalGenerationSite()
         nettoyageEtSetupDossier(Constante::REPERTOIRE_DESTINATION_JSON);
         nettoyageEtSetupDossier(Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
         echo Constante::MODE_DEBUG === true ? "On formate les pages d'erreur en json <br/>" : null;
-        traiterRepertoireJsonArticleMarkdown(Constante::REPERTOIRE_PAGES_ERREUR, Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, true,true);
+        traiterRepertoireJsonArticleMarkdown(Constante::REPERTOIRE_PAGES_ERREUR, Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, true, true);
         echo Constante::MODE_DEBUG === true ? "On formate les articles en json <br/>" : null;
         traiterRepertoireJsonArticleMarkdown(Constante::REPERTOIRE_BILLETS, Constante::REPERTOIRE_DESTINATION_JSON);
         echo Constante::MODE_DEBUG === true ? "On crée le listing des articles <br/>" : null;
@@ -54,7 +54,7 @@ function analyseRefraichissementDelaiMiseAJourDonnee()
         if (file_exists(Constante::NOM_FICHIER_VERIFICATION_TIMESTAMP)) {
             $timestamp = file_get_contents(Constante::NOM_FICHIER_VERIFICATION_TIMESTAMP);
         }
-        if (! is_int($timestamp)) {
+        if (!is_int($timestamp)) {
             if (abs(time() - $timestamp) > Constante::NOMBRE_DE_SECONDES_AVANT_MISE_A_JOUR) {
                 // mettre à jour car il est temps
                 $mettreAjourTimestampEnregistre = true;
