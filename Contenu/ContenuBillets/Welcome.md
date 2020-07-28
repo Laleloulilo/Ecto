@@ -4,7 +4,6 @@ date: 12/06/2020
 description: Présentation et mode d'emploi
 ---
 
-
 ![logo ecto](./logo.png)
 
 Mini CMS optimisé pour le blogging
