@@ -16,11 +16,11 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
         $json = file_get_contents($chemin);
         $json_data = json_decode($json, true);
 
-        $titre = Constante::NOM_PAGE_ACCUEIL . " : " . Constante::NOM_DU_SITE;
+        $titre = NOM_PAGE_ACCUEIL . " : " . NOM_DU_SITE;
         ob_start();
         ?>
-        <H1 id="titre_accueil"><?php echo Constante::NOM_DU_SITE ?></H1>
-        <p class="sous-titre lead"><?php echo Constante::DESCRIPTION_PAGE_ACCUEIL ?></p>
+        <H1 id="titre_accueil"><?php echo NOM_DU_SITE ?></H1>
+        <p class="sous-titre lead"><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
         <?php
         foreach ($json_data as $enTeteArticleBlog) {
             if (array_key_exists('titre', $enTeteArticleBlog)
@@ -46,12 +46,12 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
             }
         }
         $contenu = ob_get_clean();
-        $description = Constante::DESCRIPTION_PAGE_ACCUEIL;
+        $description = DESCRIPTION_PAGE_ACCUEIL;
         ob_start();
-        require(Constante::LOCALISATION_TEMPLATE);
+        require(LOCALISATION_TEMPLATE);
         $corpsPage = ob_get_clean();
-        $header = file_get_contents(Constante::LOCALISATION_HEADER_TEMPLATE);
-        $footer = file_get_contents(Constante::LOCALISATION_FOOTER_TEMPLATE);
+        $header = file_get_contents(LOCALISATION_HEADER_TEMPLATE);
+        $footer = file_get_contents(LOCALISATION_FOOTER_TEMPLATE);
         $page = $header . $corpsPage . $footer;
         // index est le nom utilisé pour la première page d'un site sur la majorité des serveurs
         $fichierEnTete = fopen($dossierDestinationRendu . '/' . "index.php", 'w');
@@ -72,11 +72,11 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
             $json_data = json_decode($json, true);
 
             if (array_key_exists('enTete', $json_data) && array_key_exists('contenu', $json_data)) {
-                $titre = $json_data['enTete']['titre'] . " : " . Constante::NOM_DU_SITE;
+                $titre = $json_data['enTete']['titre'] . " : " . NOM_DU_SITE;
                 $categorie = $json_data['enTete']['categorie'];
 
                 if ($categorie != null) {
-                    $categorie = " • <em>" . $categorie."</em>";
+                    $categorie = " • <em>" . $categorie . "</em>";
                 }
                 $sousTitre = "";
                 if ($json_data['enTete']['formatArticle']) {
@@ -87,10 +87,10 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
 
                 ob_start();
                 ?>
-                <H2 id="titre_accueil">
-                    <a href=<?php echo '"' . Constante::ADRESSE_EXACTE_SITE . '"' ?>><?php echo Constante::NOM_DU_SITE ?></a>
-                </H2>
-                <p class="sous-titre lead"><?php echo Constante::DESCRIPTION_PAGE_ACCUEIL ?></p>
+                <h2 id="titre_accueil">
+                    <a href=<?php echo '"' . ADRESSE_EXACTE_SITE . '"' ?>><?php echo NOM_DU_SITE ?></a>
+                </h2>
+                <p class="sous-titre lead"><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
                 <article>
                     <header>
                         <h1><?= $json_data['enTete']['titre'] ?></h1>
@@ -103,10 +103,10 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
                 $contenu = ob_get_clean();
                 ob_start();
                 $description = $json_data['enTete']['description'];
-                require(Constante::LOCALISATION_TEMPLATE);
+                require(LOCALISATION_TEMPLATE);
                 $corpsPage = ob_get_clean();
-                $header = file_get_contents(Constante::LOCALISATION_HEADER_TEMPLATE);
-                $footer = file_get_contents(Constante::LOCALISATION_FOOTER_TEMPLATE);
+                $header = file_get_contents(LOCALISATION_HEADER_TEMPLATE);
+                $footer = file_get_contents(LOCALISATION_FOOTER_TEMPLATE);
                 $page = $header . $corpsPage . $footer;
                 $fichierEnTete = fopen($dossierDestinationRendu . '/' . $json_data['enTete']['url'] . '.' . "php", 'w');
                 fwrite($fichierEnTete, $page);
@@ -128,7 +128,7 @@ function creationSitemap($dossierSourceArticle, $dossierSourceErreur, $nomFichie
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
     $xml .= '
                         <url>
-                            <loc>' . Constante::ADRESSE_EXACTE_SITE . '/' . "index.php" . '</loc>
+                            <loc>' . ADRESSE_EXACTE_SITE . '/' . "index.php" . '</loc>
                         </url>';
     $dossiersSource = array(
         $dossierSourceArticle,
@@ -146,7 +146,7 @@ function creationSitemap($dossierSourceArticle, $dossierSourceErreur, $nomFichie
 
                     $xml .= '
                         <url>
-                            <loc>' . Constante::ADRESSE_EXACTE_SITE . '/' . $enTeteArticleBlog['url'] . "." . "php" . '</loc>
+                            <loc>' . ADRESSE_EXACTE_SITE . '/' . $enTeteArticleBlog['url'] . "." . "php" . '</loc>
                         </url>';
                 }
             }
@@ -154,7 +154,7 @@ function creationSitemap($dossierSourceArticle, $dossierSourceErreur, $nomFichie
     }
     $xml .= '</urlset>';
     // index est le nom utilisé pour la première page d'un site sur la majorité des serveurs
-    $fichierSitemap = fopen($dossierDestinationRendu . '/' . Constante::NOM_FICHIER_SITEMAP, 'w');
+    $fichierSitemap = fopen($dossierDestinationRendu . '/' . NOM_FICHIER_SITEMAP, 'w');
     fwrite($fichierSitemap, $xml);
     fclose($fichierSitemap);
     return null;
@@ -163,10 +163,10 @@ function creationSitemap($dossierSourceArticle, $dossierSourceErreur, $nomFichie
 function creationHtaccess($dossierDestinationRendu)
 {
     $htaccess = "";
-    if (Constante::REDIRECTION_HTTPS) {
+    if (REDIRECTION_HTTPS) {
         $htaccess .= "RewriteEngine On";
         $htaccess .= "\nRewriteCond %{SERVER_PORT} 80";
-        $htaccess .= "\nRewriteRule ^(.*)$ " . Constante::ADRESSE_EXACTE_SITE . "/$1 [R=301,L]";
+        $htaccess .= "\nRewriteRule ^(.*)$ " . ADRESSE_EXACTE_SITE . "/$1 [R=301,L]";
     }
     $htaccess .= "\n" . '<IfModule mod_headers.c>
 Header always set X-FRAME-OPTIONS "DENY"
@@ -201,10 +201,10 @@ AddOutputFilterByType DEFLATE application/x-javascript
     $adresseErreur403 = $dossierDestinationRendu . '/' . "403.php";
 
     if (file_exists($adresseErreur404)) {
-        $htaccess .= "\nErrorDocument 404 " . Constante::ADRESSE_EXACTE_SITE . "/" . "404.php";
+        $htaccess .= "\nErrorDocument 404 " . ADRESSE_EXACTE_SITE . "/" . "404.php";
     }
     if (file_exists($adresseErreur403)) {
-        $htaccess .= "\nErrorDocument 403 " . Constante::ADRESSE_EXACTE_SITE . "/" . "403.php";
+        $htaccess .= "\nErrorDocument 403 " . ADRESSE_EXACTE_SITE . "/" . "403.php";
     }
 
     // index est le nom utilisé pour la première page d'un site sur la majorité des serveurs
@@ -220,7 +220,7 @@ function creationRobotsTxT($dossierDestinationRendu)
     // Choix du user-agent
     $robotsTxT = "User-agent: *" . "\n";
     // On donne l'adresse du fichier sitemap
-    $robotsTxT .= "Sitemap :" . Constante::ADRESSE_EXACTE_SITE . "/" . Constante::NOM_FICHIER_SITEMAP . "\n";
+    $robotsTxT .= "Sitemap :" . ADRESSE_EXACTE_SITE . "/" . NOM_FICHIER_SITEMAP . "\n";
     $robotsTxT .= "Allow:/" . "\n";
 
     // Suppression à l'indexation de tous les répertoires autres que celui du rendu

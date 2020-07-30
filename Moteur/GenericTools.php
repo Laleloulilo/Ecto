@@ -20,22 +20,22 @@ function calculInformationLongueurLecture($contenu_article)
 {
     $chaine_retour = "";
     // Arrondi à l'entier supérieur du nombre de minutes nécessaires pour lire l'article
-    $minute_lecture = ceil(str_word_count(strip_tags($contenu_article)) / Constante::MOT_PAR_MINUTE);
+    $minute_lecture = ceil(str_word_count(strip_tags($contenu_article)) / MOT_PAR_MINUTE);
 
     // Si l'utilisateur à choisi d'assortir son temps de lecture d'emji, on en rajoute.
-    if (Constante::EMOJI_LONGUEUR_LECTURE) {
+    if (EMOJI_LONGUEUR_LECTURE) {
         $compteur = $minute_lecture;
         if ($compteur < 25) {
             // Cas des articles longs, une emoji par tranche de 5 minutes
             while ($compteur > 0) {
-                $chaine_retour .= Constante::EMOJI_5_MINUTES;
+                $chaine_retour .= EMOJI_5_MINUTES;
                 $compteur = $compteur - 5;
             }
             $chaine_retour .= " ";
         } else {
             // Cas des articles longs, une emoji par tranche de 10 minutes
             while ($compteur > 0) {
-                $chaine_retour .= Constante::EMOJI_10_MINUTES;
+                $chaine_retour .= EMOJI_10_MINUTES;
                 $compteur = $compteur - 10;
             }
             $chaine_retour .= " ";
@@ -52,7 +52,7 @@ function correctionCheminImage($contenu, $cheminDossierImage)
 
 function formaterDateArticle($dateAFormater)
 {
-    setlocale(LC_TIME, Constante::ZONE_TEMPORELLE_HEURE);
+    setlocale(LC_TIME, ZONE_TEMPORELLE_HEURE);
     // le format actuel est JJ Mois AAAA
     $timestampFormate = strftime("%e %B %G", $dateAFormater);
     // Première lettre de chaque mot en majuscule.

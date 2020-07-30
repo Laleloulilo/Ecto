@@ -3,9 +3,9 @@
 function traiterRepertoireJsonArticleMarkdown($dossierSource, $dossierDestinationRendu, $estDossierPageErreur = false, $estPage = false)
 {
     // Nettoyage de la destination
-    echo Constante::MODE_DEBUG === true ? "Je check si le dossier existe. <br>" : null;
+    echo MODE_DEBUG === true ? "Je check si le dossier existe. <br>" : null;
     dossierExistantOuLeCreer($dossierDestinationRendu);
-    echo Constante::MODE_DEBUG === true ? "Le dossier a été créé. <br>" : null;
+    echo MODE_DEBUG === true ? "Le dossier a été créé. <br>" : null;
     nettoyageDossierDestinationHorsSousDossier($dossierDestinationRendu);
     // Listing des fichiers à traiter.
     $repertoire = opendir($dossierSource); // On définit le répertoire dans lequel on souhaite travailler.
@@ -21,7 +21,7 @@ function traiterRepertoireJsonArticleMarkdown($dossierSource, $dossierDestinatio
             }
             closedir($repertoireEnfant); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
         } else {
-            controlerEtFormaterJsonArticleMarkdown($nomItem, $dossierSource, $dossierDestinationRendu, Constante::CATEGORIE_PAR_DEFAUT, $estPage, $estDossierPageErreur);
+            controlerEtFormaterJsonArticleMarkdown($nomItem, $dossierSource, $dossierDestinationRendu, CATEGORIE_PAR_DEFAUT, $estPage, $estDossierPageErreur);
         }
     }
     closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
@@ -51,14 +51,14 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
         }
         $fichierAManipuler = $dossierSource . '/' . $nomFichier;
         $contenu_du_fichier = file_get_contents($fichierAManipuler);
-        $fichiervalide = verifierNombreBlocDansFichier($contenu_du_fichier, Constante::NOMBRE_BLOC_FICHIER_MARKDOWN, Constante::DELIMITEUR_BLOCS_MARKDOWN);
+        $fichiervalide = verifierNombreBlocDansFichier($contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN, DELIMITEUR_BLOCS_MARKDOWN);
         //Vérification et mise en forme des entrants d'en-tête
         $fichierSource = fopen($fichierAManipuler, 'r');
         $limite = 2;
         while ($fichiervalide && $limite > 0) {
             $ligne = fgets($fichierSource);
             // décodage de l'en-tête
-            if (trim($ligne) === Constante::DELIMITEUR_BLOCS_MARKDOWN
+            if (trim($ligne) === DELIMITEUR_BLOCS_MARKDOWN
             ) {
                 $limite--;
             } elseif ($limite = 1 && stripos($ligne, ":")) { //on vérifie que nous sommes bien dans un bloc d'en-tête avec limite=1
@@ -85,12 +85,12 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
             if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $EstDossierPageErreur)) {
 
                 //Parfois les fichiers embarquent plusieurs "---" car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
-                $contenuMD = explode(Constante::DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, Constante::NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
+                $contenuMD = explode(DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
                 $articleAParser = mb_convert_encoding($contenuMD[2], $encodageUtilise, $encodageUtilise);
                 // Conversion du contenu en HTML var_dump($contenuMD)
                 $articleParse = $Parsedown->text($articleAParser);
                 $contenuEditorial = trim($articleParse);
-                $contenuEditorial = correctionCheminImage($contenuEditorial, Constante::REPERTOIRE_IMAGE);
+                $contenuEditorial = correctionCheminImage($contenuEditorial, REPERTOIRE_IMAGE);
                 // Rajouts des valeurs calculées à l'en-tête
                 $nbMots = calculInformationLongueurLecture($articleParse);
                 $timestampFormate = formaterDateArticle($timestampExact);

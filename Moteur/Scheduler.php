@@ -11,37 +11,37 @@ require_once('GenericTools.php');
 function processusGlobalGenerationSite()
 {
     if (analyseRefraichissementDelaiMiseAJourDonnee()) {
-        echo Constante::MODE_DEBUG === true ? "Vide les dossiers issus du build précédent <br/>" : null;
-        nettoyageEtSetupDossier(Constante::REPERTOIRE_BUILD);
-        nettoyageEtSetupDossier(Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
-        nettoyageEtSetupDossier(Constante::REPERTOIRE_DESTINATION_JSON);
-        nettoyageEtSetupDossier(Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo Constante::MODE_DEBUG === true ? "On formate les pages d'erreur en json <br/>" : null;
-        traiterRepertoireJsonArticleMarkdown(Constante::REPERTOIRE_PAGES_ERREUR, Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, true, true);
-        echo Constante::MODE_DEBUG === true ? "On formate les articles en json <br/>" : null;
-        traiterRepertoireJsonArticleMarkdown(Constante::REPERTOIRE_BILLETS, Constante::REPERTOIRE_DESTINATION_JSON);
-        echo Constante::MODE_DEBUG === true ? "On crée le listing des articles <br/>" : null;
-        creerListingEntete(Constante::REPERTOIRE_DESTINATION_JSON);
-        echo Constante::MODE_DEBUG === true ? "On crée le listing des pages d'erreur <br/>" : null;
-        creerListingEntete(Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
-        echo Constante::MODE_DEBUG === true ? "Mise en place des templates <br/>" : null;
-        copierDossierEtSousDossier(Constante::DOSSIER_ELEMENTS_DESIGN_TEMPLATE, Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo Constante::MODE_DEBUG === true ? "Mise en place des images <br/>" : null;
-        dossierExistantOuLeCreer(Constante::REPERTOIRE_CONTENU_IMAGE);
-        nettoyageEtSetupDossier(Constante::REPERTOIRE_RENDU_IMAGE);
-        copierDossierEtSousDossier(Constante::REPERTOIRE_CONTENU_IMAGE, Constante::REPERTOIRE_RENDU_IMAGE);
-        echo Constante::MODE_DEBUG === true ? "On crée les rendus articles <br/>" : null;
-        rendufichiersArticle(Constante::REPERTOIRE_DESTINATION_JSON, Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo Constante::MODE_DEBUG === true ? "On crée les rendus pages d'erreur <br/>" : null;
-        rendufichiersArticle(Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo Constante::MODE_DEBUG === true ? "On crée l'index <br/>" : null;
-        creationIndexBlog(Constante::REPERTOIRE_DESTINATION_JSON, 'en-tete', Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo Constante::MODE_DEBUG === true ? "On crée le sitemap <br/>" : null;
-        creationSitemap(Constante::REPERTOIRE_DESTINATION_JSON, Constante::REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, 'en-tete', Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo Constante::MODE_DEBUG === true ? "On crée le fichier robots.txt <br/>" : null;
-        creationRobotsTxT(Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo Constante::MODE_DEBUG === true ? "On crée le fichier .htaccess <br/>" : null;
-        creationHtaccess(Constante::REPERTOIRE_DESTINATION_RENDU_PHP);
+        echo MODE_DEBUG === true ? "Vide les dossiers issus du build précédent <br/>" : null;
+        nettoyageEtSetupDossier(REPERTOIRE_BUILD);
+        nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
+        nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_JSON);
+        nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_RENDU_PHP);
+        echo MODE_DEBUG === true ? "On formate les pages d'erreur en json <br/>" : null;
+        traiterRepertoireJsonArticleMarkdown(REPERTOIRE_PAGES_ERREUR, REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, true, true);
+        echo MODE_DEBUG === true ? "On formate les articles en json <br/>" : null;
+        traiterRepertoireJsonArticleMarkdown(REPERTOIRE_BILLETS, REPERTOIRE_DESTINATION_JSON);
+        echo MODE_DEBUG === true ? "On crée le listing des articles <br/>" : null;
+        creerListingEntete(REPERTOIRE_DESTINATION_JSON);
+        echo MODE_DEBUG === true ? "On crée le listing des pages d'erreur <br/>" : null;
+        creerListingEntete(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
+        echo MODE_DEBUG === true ? "Mise en place des templates <br/>" : null;
+        copierDossierEtSousDossier(DOSSIER_ELEMENTS_DESIGN_TEMPLATE, REPERTOIRE_DESTINATION_RENDU_PHP);
+        echo MODE_DEBUG === true ? "Mise en place des images <br/>" : null;
+        dossierExistantOuLeCreer(REPERTOIRE_CONTENU_IMAGE);
+        nettoyageEtSetupDossier(REPERTOIRE_RENDU_IMAGE);
+        copierDossierEtSousDossier(REPERTOIRE_CONTENU_IMAGE, REPERTOIRE_RENDU_IMAGE);
+        echo MODE_DEBUG === true ? "On crée les rendus articles <br/>" : null;
+        rendufichiersArticle(REPERTOIRE_DESTINATION_JSON, REPERTOIRE_DESTINATION_RENDU_PHP);
+        echo MODE_DEBUG === true ? "On crée les rendus pages d'erreur <br/>" : null;
+        rendufichiersArticle(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, REPERTOIRE_DESTINATION_RENDU_PHP);
+        echo MODE_DEBUG === true ? "On crée l'index <br/>" : null;
+        creationIndexBlog(REPERTOIRE_DESTINATION_JSON, 'en-tete', REPERTOIRE_DESTINATION_RENDU_PHP);
+        echo MODE_DEBUG === true ? "On crée le sitemap <br/>" : null;
+        creationSitemap(REPERTOIRE_DESTINATION_JSON, REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, 'en-tete', REPERTOIRE_DESTINATION_RENDU_PHP);
+        echo MODE_DEBUG === true ? "On crée le fichier robots.txt <br/>" : null;
+        creationRobotsTxT(REPERTOIRE_DESTINATION_RENDU_PHP);
+        echo MODE_DEBUG === true ? "On crée le fichier .htaccess <br/>" : null;
+        creationHtaccess(REPERTOIRE_DESTINATION_RENDU_PHP);
     }
 }
 
@@ -50,12 +50,12 @@ function analyseRefraichissementDelaiMiseAJourDonnee()
     $mettreAjourTimestampEnregistre = false;
     $miseAJourAFaire = false;
     $timestamp = 0;
-    if (file_exists(Constante::NOM_FICHIER_VERIFICATION_TIMESTAMP)) {
-        if (file_exists(Constante::NOM_FICHIER_VERIFICATION_TIMESTAMP)) {
-            $timestamp = file_get_contents(Constante::NOM_FICHIER_VERIFICATION_TIMESTAMP);
+    if (file_exists(NOM_FICHIER_VERIFICATION_TIMESTAMP)) {
+        if (file_exists(NOM_FICHIER_VERIFICATION_TIMESTAMP)) {
+            $timestamp = file_get_contents(NOM_FICHIER_VERIFICATION_TIMESTAMP);
         }
         if (!is_int($timestamp)) {
-            if (abs(time() - $timestamp) > Constante::NOMBRE_DE_SECONDES_AVANT_MISE_A_JOUR) {
+            if (abs(time() - $timestamp) > NOMBRE_DE_SECONDES_AVANT_MISE_A_JOUR) {
                 // mettre à jour car il est temps
                 $mettreAjourTimestampEnregistre = true;
             }
@@ -77,12 +77,12 @@ function analyseRefraichissementDelaiMiseAJourDonnee()
 function verifierNecessiteMiseAJour($timestampDerniereMaj)
 {
     clearstatcache();
-    dossierExistantOuLeCreer(Constante::REPERTOIRE_BILLETS);
-    dossierExistantOuLeCreer(Constante::REPERTOIRE_TEMPLATE);
-    dossierExistantOuLeCreer(Constante::REPERTOIRE_CODE_PHP);
-    $getLastModDirBillets = connaitreDateDerniereModificationDossier(Constante::REPERTOIRE_BILLETS);
-    $getLastModDirTemplate = connaitreDateDerniereModificationDossier(Constante::REPERTOIRE_TEMPLATE);
-    $getLastModDirPHP = connaitreDateDerniereModificationDossier(Constante::REPERTOIRE_CODE_PHP);
+    dossierExistantOuLeCreer(REPERTOIRE_BILLETS);
+    dossierExistantOuLeCreer(REPERTOIRE_TEMPLATE);
+    dossierExistantOuLeCreer(REPERTOIRE_CODE_PHP);
+    $getLastModDirBillets = connaitreDateDerniereModificationDossier(REPERTOIRE_BILLETS);
+    $getLastModDirTemplate = connaitreDateDerniereModificationDossier(REPERTOIRE_TEMPLATE);
+    $getLastModDirPHP = connaitreDateDerniereModificationDossier(REPERTOIRE_CODE_PHP);
     $getLastModDir = max($getLastModDirBillets, $getLastModDirPHP, $getLastModDirTemplate);
     return ($timestampDerniereMaj - $getLastModDir < 0);
 }
@@ -90,7 +90,7 @@ function verifierNecessiteMiseAJour($timestampDerniereMaj)
 
 function miseAJourTimestamp()
 {
-    $fichiertimestamp = fopen(Constante::NOM_FICHIER_VERIFICATION_TIMESTAMP, 'w');
+    $fichiertimestamp = fopen(NOM_FICHIER_VERIFICATION_TIMESTAMP, 'w');
     fwrite($fichiertimestamp, time());
     fclose($fichiertimestamp);
 }
