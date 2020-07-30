@@ -85,7 +85,6 @@ p {
 
 abbr[title],
 abbr[data-original-title] {
-    text-decoration: underline;
     -webkit-text-decoration: underline dotted;
     text-decoration: underline dotted;
     cursor: help;
@@ -10170,7 +10169,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .text-hide {
-    font: 0/0 a;
+    font: 0/0 a sans-serif;
     color: transparent;
     text-shadow: none;
     background-color: transparent;
