@@ -11,16 +11,16 @@ function nettoyageEtSetupDossier($dossierANettoyer)
 
 function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinationRendu)
 {
-    $chemin = $dossierSource . "/" . $nomFichierEnTete . '.' . "json"; // On définit le chemin du fichier à utiliser.
+    $chemin = $dossierSource . '/' . $nomFichierEnTete . '.' . 'json'; // On définit le chemin du fichier à utiliser.
     if (file_exists($chemin)) {
         $json = file_get_contents($chemin);
         $json_data = json_decode($json, true);
 
-        $titre = NOM_PAGE_ACCUEIL . " : " . NOM_DU_SITE;
+        $titre = NOM_PAGE_ACCUEIL . ' : ' . NOM_DU_SITE;
         ob_start();
         ?>
-        <H1 id="titre_accueil"><?php echo NOM_DU_SITE ?></H1>
-        <p class="sous-titre lead"><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
+        <H1 id='titre_accueil'><?php echo NOM_DU_SITE ?></H1>
+        <p class='sous-titre lead'><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
         <?php
         foreach ($json_data as $enTeteArticleBlog) {
             if (array_key_exists('titre', $enTeteArticleBlog)
@@ -33,7 +33,7 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
                     <header>
                         <h2>
                             <small> <a
-                                    href="<?= $enTeteArticleBlog['url'] . '.' . "php" ?>"><?= $enTeteArticleBlog['titre'] ?></a>
+                                    href='<?= $enTeteArticleBlog['url'] . '.' . 'php' ?>'><?= $enTeteArticleBlog['titre'] ?></a>
                             </small>
 
                         </h2>
@@ -54,7 +54,7 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
         $footer = file_get_contents(LOCALISATION_FOOTER_TEMPLATE);
         $page = $header . $corpsPage . $footer;
         // index est le nom utilisé pour la première page d'un site sur la majorité des serveurs
-        $fichierEnTete = fopen($dossierDestinationRendu . '/' . "index.php", 'w');
+        $fichierEnTete = fopen($dossierDestinationRendu . '/' . 'index.php', 'w');
         fwrite($fichierEnTete, $page);
         fclose($fichierEnTete);
     }
@@ -66,31 +66,31 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
     $repertoire = opendir($dossierSource); // On définit le répertoire dans lequel on souhaite travailler.
     while (false !== ($fichier = readdir($repertoire))) // On lit chaque fichier du répertoire dans la boucle.
     {
-        if (verifierExtensionFichier($fichier, "json")) {
-            $chemin = $dossierSource . "/" . $fichier; // On définit le chemin du fichier à utiliser.
+        if (verifierExtensionFichier($fichier, 'json')) {
+            $chemin = $dossierSource . '/' . $fichier; // On définit le chemin du fichier à utiliser.
             $json = file_get_contents($chemin);
             $json_data = json_decode($json, true);
 
             if (array_key_exists('enTete', $json_data) && array_key_exists('contenu', $json_data)) {
-                $titre = $json_data['enTete']['titre'] . " : " . NOM_DU_SITE;
+                $titre = $json_data['enTete']['titre'] . ' : ' . NOM_DU_SITE;
                 $categorie = $json_data['enTete']['categorie'];
 
                 if ($categorie != null) {
-                    $categorie = " • <em>" . $categorie . "</em>";
+                    $categorie = ' • <em>' . $categorie . '</em>';
                 }
-                $sousTitre = "";
+                $sousTitre = '';
                 if ($json_data['enTete']['formatArticle']) {
-                    $sousTitre = "<small>" . $json_data['enTete']['date'] . $categorie . " • " . $json_data['enTete']['nbMots'] . "</small>";
+                    $sousTitre = '<small>' . $json_data['enTete']['date'] . $categorie . ' • ' . $json_data['enTete']['nbMots'] . '</small>';
                 } else if ($json_data['enTete']['formatPage']) {
-                    $sousTitre = "";
+                    $sousTitre = '';
                 }
 
                 ob_start();
                 ?>
-                <h2 id="titre_accueil">
-                    <a href=<?php echo '"' . ADRESSE_EXACTE_SITE . '"' ?>><?php echo NOM_DU_SITE ?></a>
+                <h2 id='titre_accueil'>
+                    <a href='<?=ADRESSE_EXACTE_SITE?>'><?=NOM_DU_SITE?></a>
                 </h2>
-                <p class="sous-titre lead"><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
+                <p class='sous-titre lead'><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
                 <article>
                     <header>
                         <h1><?= $json_data['enTete']['titre'] ?></h1>
@@ -108,7 +108,7 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
                 $header = file_get_contents(LOCALISATION_HEADER_TEMPLATE);
                 $footer = file_get_contents(LOCALISATION_FOOTER_TEMPLATE);
                 $page = $header . $corpsPage . $footer;
-                $fichierEnTete = fopen($dossierDestinationRendu . '/' . $json_data['enTete']['url'] . '.' . "php", 'w');
+                $fichierEnTete = fopen($dossierDestinationRendu . '/' . $json_data['enTete']['url'] . '.' . 'php', 'w');
                 fwrite($fichierEnTete, $page);
                 fclose($fichierEnTete);
             }
@@ -218,13 +218,13 @@ function creationRobotsTxT($dossierDestinationRendu)
 {
     // Création du fichier robots.txt
     // Choix du user-agent
-    $robotsTxT = "User-agent: *" . "\n";
+    $robotsTxT = 'User-agent: *' . '\n';
     // On donne l'adresse du fichier sitemap
-    $robotsTxT .= "Sitemap :" . ADRESSE_EXACTE_SITE . "/" . NOM_FICHIER_SITEMAP . "\n";
-    $robotsTxT .= "Allow:/" . "\n";
+    $robotsTxT .= 'Sitemap :' . ADRESSE_EXACTE_SITE . '/' . NOM_FICHIER_SITEMAP . '\n';
+    $robotsTxT .= 'Allow:/' . '\n';
 
     // Suppression à l'indexation de tous les répertoires autres que celui du rendu
-    $dir = "../";
+    $dir = '../';
     // si le dossier racine existe (ce qui semble évident) et qu'il contient quelque chose
     if (is_dir($dir) && $dh = opendir($dir)) {
         // boucler tant que quelque chose est trouve
@@ -233,7 +233,7 @@ function creationRobotsTxT($dossierDestinationRendu)
             // affiche le nom et le type si ce n'est pas un element du systeme
             if (is_dir($dir . $file) && $file != '.' && $file != '..' && $file != $dossierDestinationRendu) {
                 // on interdit le parcours de tous les dossiers hormis celui de rendu
-                $robotsTxT .= "Disallow: /" . $file . "/" . "\n";
+                $robotsTxT .= 'Disallow: /' . $file . '/' . '\n';
             }
         }
         // on ferme la connection

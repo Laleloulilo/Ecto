@@ -3,18 +3,18 @@
 function traiterRepertoireJsonArticleMarkdown($dossierSource, $dossierDestinationRendu, $estDossierPageErreur = false, $estPage = false)
 {
     // Nettoyage de la destination
-    echo MODE_DEBUG === true ? "Je check si le dossier existe. <br>" : null;
+    echo MODE_DEBUG === true ? 'Je check si le dossier existe. <br>' : null;
     dossierExistantOuLeCreer($dossierDestinationRendu);
-    echo MODE_DEBUG === true ? "Le dossier a été créé. <br>" : null;
+    echo MODE_DEBUG === true ? 'Le dossier a été créé. <br>' : null;
     nettoyageDossierDestinationHorsSousDossier($dossierDestinationRendu);
     // Listing des fichiers à traiter.
     $repertoire = opendir($dossierSource); // On définit le répertoire dans lequel on souhaite travailler.
     while (false !== ($nomItem = readdir($repertoire))) {
 
-        if ($nomItem != "." && $nomItem != ".." && is_dir($dossierSource . "/" . $nomItem)) {
+        if ($nomItem != '.' && $nomItem != '..' && is_dir($dossierSource . '/' . $nomItem)) {
             //Si un fichier MD est présent dans un sous-répertoire, ce sous répertoire deviendra sa catégorie
             //Ecto ne prend pas en charge les repertoires enfants multiples, seul le premier niveau est analysé
-            $dossierEnfant = $dossierSource . "/" . $nomItem;
+            $dossierEnfant = $dossierSource . '/' . $nomItem;
             $repertoireEnfant = opendir($dossierEnfant); // On définit le répertoire dans lequel on souhaite travailler.
             while (false !== ($nomEnfant = readdir($repertoireEnfant))) {
                 controlerEtFormaterJsonArticleMarkdown($nomEnfant, $dossierEnfant, $dossierDestinationRendu, $nomItem, $estPage, $estDossierPageErreur);
@@ -31,7 +31,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
 {
     $Parsedown = new ParsedownExtra();
 
-    if (verifierExtensionFichier($nomFichier, "md")) {
+    if (verifierExtensionFichier($nomFichier, 'md')) {
         //Définition de différentes variables
         $encodageUtilise = 'UTF-8';
         $article = null;
@@ -47,7 +47,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
         //Cas particulier des pages d'erreur
         if ($EstDossierPageErreur) {
             $timestampExact = time();
-            $description = "page d'erreur";
+            $description = 'page d\'erreur';
         }
         $fichierAManipuler = $dossierSource . '/' . $nomFichier;
         $contenu_du_fichier = file_get_contents($fichierAManipuler);
@@ -61,13 +61,13 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
             if (trim($ligne) === DELIMITEUR_BLOCS_MARKDOWN
             ) {
                 $limite--;
-            } elseif ($limite = 1 && stripos($ligne, ":")) { //on vérifie que nous sommes bien dans un bloc d'en-tête avec limite=1
-                $pieces = explode(":", $ligne, 2);
+            } elseif ($limite = 1 && stripos($ligne, ':')) { //on vérifie que nous sommes bien dans un bloc d'en-tête avec limite=1
+                $pieces = explode(':', $ligne, 2);
                 switch ($pieces[0]) {
-                    case "titre":
+                    case 'titre':
                         $titre = mb_convert_encoding(trim($pieces[1]), $encodageUtilise, $encodageUtilise);
                         break;
-                    case "date":
+                    case 'date':
                         // Uniformisation de la date
                         $timestampExact = strtotime(trim($pieces[1]));
                         //parfois strtotime présente un bug de transcription de date, dans ce cas on remplace les / par des tirets
@@ -75,8 +75,10 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
                             $timestampExact = strtotime(str_replace('/', '-', trim($pieces[1])));
                         }
                         break;
-                    case "description":
+                    case 'description':
                         $description = mb_convert_encoding(trim($pieces[1]), $encodageUtilise, $encodageUtilise);
+                        break;
+                    default :
                         break;
                 }
             }
@@ -84,7 +86,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
         if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $EstDossierPageErreur)) {
             if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $EstDossierPageErreur)) {
 
-                //Parfois les fichiers embarquent plusieurs "---" car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
+                //Parfois les fichiers embarquent plusieurs '---' car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
                 $contenuMD = explode(DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
                 $articleAParser = mb_convert_encoding($contenuMD[2], $encodageUtilise, $encodageUtilise);
                 // Conversion du contenu en HTML var_dump($contenuMD)
@@ -101,7 +103,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
                 // Création de l'obet article
                 $article = new Article($entete, $contenuEditorial);
                 // Enregistrement de l'article
-                $fichierArticle = fopen($dossierDestinationRendu . '/' . $url . '.' . "json", 'w');
+                $fichierArticle = fopen($dossierDestinationRendu . '/' . $url . '.' . 'json', 'w');
                 fwrite($fichierArticle, json_encode($article));
                 // TODO : JSON_THROW_ON_ERROR et gestion de l'exception
                 fclose($fichierArticle);
@@ -113,7 +115,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
 function controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $estDossierPageErreur = false)
 {
     $infoIncompletes = empty($titre) || empty($timestampExact) || empty($description) || !is_bool($estPage);
-    if ($estDossierPageErreur && $titre != "404" && $titre != "403") {
+    if ($estDossierPageErreur && $titre != '404' && $titre != '403') {
         //Dans le cas d'une page d'erreur seules certains titres sont pertinents (404,403 dans un premier temps)
         return false;
     } elseif ($infoIncompletes) {
@@ -131,8 +133,8 @@ function creerListingEntete($dossierDestination)
     $repertoire = opendir($dossierDestination); // On définit le répertoire dans lequel on souhaite travailler.
     while (false !== ($fichier = readdir($repertoire))) // On lit chaque fichier du répertoire dans la boucle.
     {
-        if (verifierExtensionFichier($fichier, "json")) {
-            $chemin = $dossierDestination . "/" . $fichier; // On définit le chemin du fichier à utiliser.
+        if (verifierExtensionFichier($fichier, 'json')) {
+            $chemin = $dossierDestination . '/' . $fichier; // On définit le chemin du fichier à utiliser.
             $json = file_get_contents($chemin);
             $json_data = json_decode($json, true);
             if (array_key_exists('enTete', $json_data)) {
@@ -149,7 +151,7 @@ function creerListingEntete($dossierDestination)
     // On ordonne le fichier d'en-tête par date
     $resultat = array_multisort($colonne, SORT_DESC, $listeEnTete);
     if (!$resultat) {
-        error_log("On a un gros problème à la génération du json");
+        error_log('On a un gros problème à la génération du json');
     }
     fwrite($fichierEnTete, json_encode($listeEnTete));
     fclose($fichierEnTete);
