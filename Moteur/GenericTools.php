@@ -50,15 +50,6 @@ function correctionCheminImage($contenu, $cheminDossierImage)
     return $contenu = str_replace($enTeteGeneriqueSourceImage, $enTeteGeneriqueSourceImage . $cheminDossierImage . '/', $contenu);
 }
 
-function formaterDateArticle($dateAFormater)
-{
-    setlocale(LC_TIME, ZONE_TEMPORELLE_HEURE);
-    // le format actuel est JJ Mois AAAA
-    $timestampFormate = strftime('%e %B %G', $dateAFormater);
-    // Première lettre de chaque mot en majuscule.
-    return ucwords($timestampFormate);
-}
-
 function verifierExtensionFichier($fichierAControler, $extensionSouhaitee)
 {
     $info = new SplFileInfo($fichierAControler);

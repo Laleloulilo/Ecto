@@ -8,6 +8,7 @@ require_once('JsonDataBaseBuilder.php');
 require_once('PhpPageBuilder.php');
 require_once('GenericTools.php');
 require_once('Logger.php');
+setlocale(LC_TIME, ZONE_TEMPORELLE_HEURE);
 
 function processusGlobalGenerationSite()
 {

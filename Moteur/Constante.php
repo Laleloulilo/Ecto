@@ -49,6 +49,7 @@ define('REPERTOIRE_IMAGE', 'Images');
 define('NOM_FICHIER_SITEMAP', 'sitemap.xml');
 //Choix de la zone pour l'affichage des heures
 define('ZONE_TEMPORELLE_HEURE', 'fr_FR');
+define('FORMAT_DATE', '%e %B %G');
 //Pour controle théorique fichier markdown
 define('NOMBRE_BLOC_FICHIER_MARKDOWN', 2); //Ici le bloc d'en-tête et le bloc de contenu
 define('DELIMITEUR_BLOCS_MARKDOWN', '---');

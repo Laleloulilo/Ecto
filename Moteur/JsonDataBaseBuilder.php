@@ -37,7 +37,6 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
         $article = null;
         //Initialisation des entrants
         $timestampExact = null;
-        $timestampFormate = null;
         //Contenu du fichier à manipuler
         $contenu_du_fichier = null;
         $titre = null;
@@ -93,10 +92,9 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
             $contenuEditorial = correctionCheminImage($contenuEditorial, REPERTOIRE_IMAGE);
             // Rajouts des valeurs calculées à l'en-tête
             $nbMots = calculInformationLongueurLecture($articleParse);
-            $timestampFormate = formaterDateArticle($timestampExact);
             $url = transformerTitreEnUrlValide($titre);
             // création de l'en-tête
-            $entete = new EnTete($timestampFormate, $titre, $description, $url, $nbMots, $timestampExact, $categorie, $estPage);
+            $entete = new EnTete($titre, $description, $url, $nbMots, $timestampExact, $categorie, $estPage);
             // Création de l'obet article
             $article = new Article($entete, $contenuEditorial);
             // Enregistrement de l'article

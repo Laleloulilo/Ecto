@@ -13,9 +13,9 @@ class EnTete
     public $formatArticle;
     public $formatPage;
 
-    public function __construct($date, $titre, $description, $url, $nbMots, $timestamp_date, $categorie, $formatPage)
+    public function __construct($titre, $description, $url, $nbMots, $timestamp_date, $categorie, $formatPage)
     {
-        $this->date = $date;
+        $this->date = ucwords(strftime(FORMAT_DATE, $timestamp_date));
         $this->titre = $titre;
         $this->description = $description;
         $this->url = $url;
