@@ -13,7 +13,7 @@ class EnTete
     public $formatArticle;
     public $formatPage;
 
-    public function __construct($date, $titre, $description, $url, $nbMots, $timestamp_date, $categorie, $formatPage, $formatArticle)
+    public function __construct($date, $titre, $description, $url, $nbMots, $timestamp_date, $categorie, $formatPage)
     {
         $this->date = $date;
         $this->titre = $titre;
@@ -23,7 +23,7 @@ class EnTete
         $this->timestamp_date = $timestamp_date;
         $this->categorie = $categorie;
         $this->formatPage = $formatPage;
-        $this->formatArticle = $formatArticle;
+        $this->formatArticle = !$formatPage;
     }
 
     public function getDate()

@@ -122,31 +122,26 @@ function copierDossierEtSousDossier($origine, $destination)
     return true;
 }
 
-function nettoyageDossierDestinationIncluantSousDossier($directory, $empty = true)
+function nettoyageDossierDestinationIncluantSousDossier($dossier)
 {
-    if (substr($directory, -1) == '/') {
-        $directory = substr($directory, 0, -1);
+    if (substr($dossier, -1) == '/') {
+        $dossier = substr($dossier, 0, -1);
     }
-    if (!file_exists($directory) || !is_dir($directory) || !is_readable($directory)) {
+    if (!is_readable($dossier) || !is_dir($dossier)) {
         return false;
     } else {
-        $directoryHandle = opendir($directory);
-        while ($contents = readdir($directoryHandle)) {
-            if ($contents != '.' && $contents != '..') {
-                $path = $directory . '/' . $contents;
-
-                if (is_dir($path)) {
-                    nettoyageDossierDestinationIncluantSousDossier($path);
+        $dossierOuvert = opendir($dossier);
+        while ($contenuDossier = readdir($dossierOuvert)) {
+            if ($contenuDossier != '.' && $contenuDossier != '..') {
+                $chemin = $dossier . '/' . $contenuDossier;
+                if (is_dir($chemin)) {
+                    nettoyageDossierDestinationIncluantSousDossier($chemin);
                 } else {
-                    unlink($path);
+                    unlink($chemin);
                 }
             }
         }
-        closedir($directoryHandle);
-        if (!$empty && !rmdir($directory)) {
-            return false;
-        }
-        return true;
+        closedir($dossierOuvert);
     }
 }
 

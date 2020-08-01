@@ -96,8 +96,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
             $timestampFormate = formaterDateArticle($timestampExact);
             $url = transformerTitreEnUrlValide($titre);
             // création de l'en-tête
-            $estArticle = !$estPage;
-            $entete = new EnTete($timestampFormate, $titre, $description, $url, $nbMots, $timestampExact, $categorie, $estPage, $estArticle);
+            $entete = new EnTete($timestampFormate, $titre, $description, $url, $nbMots, $timestampExact, $categorie, $estPage);
             // Création de l'obet article
             $article = new Article($entete, $contenuEditorial);
             // Enregistrement de l'article

@@ -15,7 +15,7 @@
     $difference_ms = $timestamp_fin - $timestamp_debut;
     // affichage du résultat
     ?>
-    <p class="timer">Génération de la page : <?= round($difference_ms * 1000, 1) ?> millisecondes.</p>;
+    <p class="timer">Génération de la page : <?= round($difference_ms * 1000, 1) ?> millisecondes.</p>
 </div>
 </body>
 </html>
