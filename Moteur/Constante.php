@@ -29,6 +29,8 @@ define('MODE_DEBUG', false);
 define('REDIRECTION_HTTPS', false);
 define('CATEGORIE_PAR_DEFAUT', 'Notes');
 define('LOCALISATION_TEMPLATE', '../Moteur/Template/template.php');
+define('LOCALISATION_TEMPLATE_CORPS_ARTICLE', '../Moteur/Template/templateCorpsPage.php');
+define('LOCALISATION_TEMPLATE_CORPS_INDEX', '../Moteur/Template/templateCorpsIndex.php');
 define('LOCALISATION_HEADER_TEMPLATE', '../Moteur/Template/header.php');
 define('LOCALISATION_FOOTER_TEMPLATE', '../Moteur/Template/footer.php');
 define('DOSSIER_ELEMENTS_DESIGN_TEMPLATE', '../Moteur/Template/ElementsAnnexes');

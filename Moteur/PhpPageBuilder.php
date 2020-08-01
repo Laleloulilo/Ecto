@@ -17,38 +17,28 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
         $json_data = json_decode($json, true);
 
         $titre = NOM_PAGE_ACCUEIL . ' : ' . NOM_DU_SITE;
-        ob_start();
-        ?>
-        <H1 id='titre_accueil'><?php echo NOM_DU_SITE ?></H1>
-        <p class='sous-titre lead'><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
-        <?php
+
+        $listeIndexArticle = array();
         foreach ($json_data as $enTeteArticleBlog) {
             if (array_key_exists('titre', $enTeteArticleBlog)
                 && array_key_exists('url', $enTeteArticleBlog)
                 && array_key_exists('date', $enTeteArticleBlog)
                 && array_key_exists('nbMots', $enTeteArticleBlog)
                 && array_key_exists('categorie', $enTeteArticleBlog)) {
-                ?>
-                <article>
-                    <header>
-                        <h2>
-                            <small> <a
-                                    href='<?= $enTeteArticleBlog['url'] . '.' . 'php' ?>'><?= $enTeteArticleBlog['titre'] ?></a>
-                            </small>
 
-                        </h2>
-                        <small><?= $enTeteArticleBlog['date'] ?> • <em><?= $enTeteArticleBlog['categorie'] ?></em>
-                            • <?= $enTeteArticleBlog['nbMots'] ?></small>
-                    </header>
-                    <p><?= $enTeteArticleBlog['description'] ?></p>
-                </article>
-                <?php
+
+                array_push($listeIndexArticle, array(
+                    'titre' =>$enTeteArticleBlog['titre'],
+                    'url' =>$enTeteArticleBlog['url'],
+                    'date' =>$enTeteArticleBlog['date'],
+                    'nbMots' =>$enTeteArticleBlog['nbMots'],
+                    'categorie' =>$enTeteArticleBlog['categorie'],
+                    'description' =>$enTeteArticleBlog['description']));
             }
         }
-        $contenu = ob_get_clean();
-        $description = DESCRIPTION_PAGE_ACCUEIL;
+
         ob_start();
-        require(LOCALISATION_TEMPLATE);
+        require(LOCALISATION_TEMPLATE_CORPS_INDEX);
         $corpsPage = ob_get_clean();
         $header = file_get_contents(LOCALISATION_HEADER_TEMPLATE);
         $footer = file_get_contents(LOCALISATION_FOOTER_TEMPLATE);
@@ -74,37 +64,18 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
             if (array_key_exists('enTete', $json_data) && array_key_exists('contenu', $json_data)) {
                 $titre = $json_data['enTete']['titre'] . ' : ' . NOM_DU_SITE;
                 $categorie = $json_data['enTete']['categorie'];
-
-                if ($categorie != null) {
-                    $categorie = ' • <em>' . $categorie . '</em>';
-                }
-                $sousTitre = '';
-                if ($json_data['enTete']['formatArticle']) {
-                    $sousTitre = '<small>' . $json_data['enTete']['date'] . $categorie . ' • ' . $json_data['enTete']['nbMots'] . '</small>';
-                } else if ($json_data['enTete']['formatPage']) {
-                    $sousTitre = '';
-                }
-
-                ob_start();
-                ?>
-                <h2 id='titre_accueil'>
-                    <a href='<?=ADRESSE_EXACTE_SITE?>'><?=NOM_DU_SITE?></a>
-                </h2>
-                <p class='sous-titre lead'><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
-                <article>
-                    <header>
-                        <h1><?= $json_data['enTete']['titre'] ?></h1>
-                        <?= $sousTitre ?>
-                    </header>
-                    <p><?= $json_data['contenu'] ?></p>
-                </article>
-                <?php
-
-                $contenu = ob_get_clean();
-                ob_start();
+                $format_article = $json_data['enTete']['formatArticle'];
+                $format_page = $json_data['enTete']['formatPage'];
+                $titre = $json_data['enTete']['titre'];
+                $date = $json_data['enTete']['date'];
+                $contenu = $json_data['contenu'];
                 $description = $json_data['enTete']['description'];
-                require(LOCALISATION_TEMPLATE);
+                $nbMots = $json_data['enTete']['nbMots'];
+
+                ob_start();
+                require(LOCALISATION_TEMPLATE_CORPS_ARTICLE);
                 $corpsPage = ob_get_clean();
+
                 $header = file_get_contents(LOCALISATION_HEADER_TEMPLATE);
                 $footer = file_get_contents(LOCALISATION_FOOTER_TEMPLATE);
                 $page = $header . $corpsPage . $footer;
