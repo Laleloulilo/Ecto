@@ -1,6 +1,6 @@
 # Ecto
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)  [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](http://forthebadge.com)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Laleloulilo_Ecto&metric=alert_status)](https://sonarcloud.io/dashboard?id=Laleloulilo_Ecto)
 
 Mini CMS optimisé pour le blogging
 
