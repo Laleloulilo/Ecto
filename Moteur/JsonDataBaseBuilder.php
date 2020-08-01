@@ -83,34 +83,31 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
                 }
             }
         }
-        if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $EstDossierPageErreur)) {
-            if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $EstDossierPageErreur)) {
-
-                //Parfois les fichiers embarquent plusieurs '---' car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
-                $contenuMD = explode(DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
-                $articleAParser = mb_convert_encoding($contenuMD[2], $encodageUtilise, $encodageUtilise);
-                // Conversion du contenu en HTML var_dump($contenuMD)
-                $articleParse = $Parsedown->text($articleAParser);
-                $contenuEditorial = trim($articleParse);
-                $contenuEditorial = correctionCheminImage($contenuEditorial, REPERTOIRE_IMAGE);
-                // Rajouts des valeurs calculées à l'en-tête
-                $nbMots = calculInformationLongueurLecture($articleParse);
-                $timestampFormate = formaterDateArticle($timestampExact);
-                $url = transformerTitreEnUrlValide($titre);
-                // création de l'en-tête
-                $estArticle = !$estPage;
-                $entete = new EnTete($timestampFormate, $titre, $description, $url, $nbMots, $timestampExact, $categorie, $estPage, $estArticle);
-                // Création de l'obet article
-                $article = new Article($entete, $contenuEditorial);
-                // Enregistrement de l'article
-                $fichierArticle = fopen($dossierDestinationRendu . '/' . $url . '.' . 'json', 'w');
-                try {
-                    fwrite($fichierArticle, json_encode($article, JSON_THROW_ON_ERROR));
-                } catch (Exception $e) {
-                    Logger::error("Exception : ", [$e->getMessage()]);
-                }
-                fclose($fichierArticle);
+        if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $EstDossierPageErreur)) {
+            //Parfois les fichiers embarquent plusieurs '---' car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
+            $contenuMD = explode(DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
+            $articleAParser = mb_convert_encoding($contenuMD[2], $encodageUtilise, $encodageUtilise);
+            // Conversion du contenu en HTML var_dump($contenuMD)
+            $articleParse = $Parsedown->text($articleAParser);
+            $contenuEditorial = trim($articleParse);
+            $contenuEditorial = correctionCheminImage($contenuEditorial, REPERTOIRE_IMAGE);
+            // Rajouts des valeurs calculées à l'en-tête
+            $nbMots = calculInformationLongueurLecture($articleParse);
+            $timestampFormate = formaterDateArticle($timestampExact);
+            $url = transformerTitreEnUrlValide($titre);
+            // création de l'en-tête
+            $estArticle = !$estPage;
+            $entete = new EnTete($timestampFormate, $titre, $description, $url, $nbMots, $timestampExact, $categorie, $estPage, $estArticle);
+            // Création de l'obet article
+            $article = new Article($entete, $contenuEditorial);
+            // Enregistrement de l'article
+            $fichierArticle = fopen($dossierDestinationRendu . '/' . $url . '.' . 'json', 'w');
+            try {
+                fwrite($fichierArticle, json_encode($article, JSON_THROW_ON_ERROR));
+            } catch (Exception $e) {
+                Logger::error("Exception : ", [$e->getMessage()]);
             }
+            fclose($fichierArticle);
         }
     }
 }
@@ -118,16 +115,11 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
 function controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $estDossierPageErreur = false)
 {
     $infoIncompletes = empty($titre) || empty($timestampExact) || empty($description) || !is_bool($estPage);
-    if ($estDossierPageErreur && $titre != '404' && $titre != '403') {
-        //Dans le cas d'une page d'erreur seules certains titres sont pertinents (404,403 dans un premier temps)
-        return false;
-    } elseif ($infoIncompletes) {
-        return false;
-    } elseif (!$estDossierPageErreur && strlen($titre) == 3 && is_numeric($titre)) {
-        // On interdit tous les noms d'articles de trois chiffres pour éviter les doublons avec les pages d'erreurs
-        return false;
-    }
-    return true;
+    $pageErreurInexistante = $estDossierPageErreur && $titre != '404' && $titre != '403';
+    $titrePageTrompeur = !$estDossierPageErreur && strlen($titre) == 3 && is_numeric($titre);
+    // On interdit tous les noms d'articles de trois chiffres pour éviter les doublons avec les pages d'erreurs
+
+    return ($infoIncompletes || $pageErreurInexistante || $titrePageTrompeur);
 }
 
 function creerListingEntete($dossierDestination)
