@@ -104,8 +104,11 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
                 $article = new Article($entete, $contenuEditorial);
                 // Enregistrement de l'article
                 $fichierArticle = fopen($dossierDestinationRendu . '/' . $url . '.' . 'json', 'w');
-                fwrite($fichierArticle, json_encode($article));
-                // TODO : JSON_THROW_ON_ERROR et gestion de l'exception
+                try {
+                    fwrite($fichierArticle, json_encode($article, JSON_THROW_ON_ERROR));
+                } catch (Exception $e) {
+                    Logger::error("Exception : ", [$e->getMessage()]);
+                }
                 fclose($fichierArticle);
             }
         }

@@ -7,40 +7,43 @@ require_once('Entites/Article.php');
 require_once('JsonDataBaseBuilder.php');
 require_once('PhpPageBuilder.php');
 require_once('GenericTools.php');
+require_once('Logger.php');
 
 function processusGlobalGenerationSite()
 {
+    Logger::notice("Processus de mise à jour entamé.");
     if (analyseRefraichissementDelaiMiseAJourDonnee()) {
-        echo MODE_DEBUG === true ? 'Vide les dossiers issus du build précédent <br/>' : null;
+        Logger::info("Mise à jour démarrée");
+        Logger::info("Vide les dossiers issus du build précédent ");
         nettoyageEtSetupDossier(REPERTOIRE_BUILD);
         nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
         nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_JSON);
         nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo MODE_DEBUG === true ? 'On formate les pages d\'erreur en json <br/>' : null;
+        Logger::info("Formatage des pages d'erreur en json.");
         traiterRepertoireJsonArticleMarkdown(REPERTOIRE_PAGES_ERREUR, REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, true, true);
-        echo MODE_DEBUG === true ? 'On formate les articles en json <br/>' : null;
+        Logger::info("Formatage des pages articles en json.");
         traiterRepertoireJsonArticleMarkdown(REPERTOIRE_BILLETS, REPERTOIRE_DESTINATION_JSON);
-        echo MODE_DEBUG === true ? 'On crée le listing des articles <br/>' : null;
+        Logger::info("Création listing articles.");
         creerListingEntete(REPERTOIRE_DESTINATION_JSON);
-        echo MODE_DEBUG === true ? 'On crée le listing des pages d\'erreur <br/>' : null;
+        Logger::info("Création listing pages d'erreur.");
         creerListingEntete(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
-        echo MODE_DEBUG === true ? 'Mise en place des templates <br/>' : null;
+        Logger::info("FMise en place des templates.");
         copierDossierEtSousDossier(DOSSIER_ELEMENTS_DESIGN_TEMPLATE, REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo MODE_DEBUG === true ? 'Mise en place des images <br/>' : null;
+        Logger::info("Mise en place des images.");
         dossierExistantOuLeCreer(REPERTOIRE_CONTENU_IMAGE);
         nettoyageEtSetupDossier(REPERTOIRE_RENDU_IMAGE);
         copierDossierEtSousDossier(REPERTOIRE_CONTENU_IMAGE, REPERTOIRE_RENDU_IMAGE);
-        echo MODE_DEBUG === true ? 'On crée les rendus articles <br/>' : null;
+        Logger::info("Création des rendus articles.");
         rendufichiersArticle(REPERTOIRE_DESTINATION_JSON, REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo MODE_DEBUG === true ? 'On crée les rendus pages d\'erreur <br/>' : null;
+        Logger::info("Création des pages d'erreur.");
         rendufichiersArticle(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo MODE_DEBUG === true ? 'On crée l\'index <br/>' : null;
+        Logger::info("Création de l'index.");
         creationIndexBlog(REPERTOIRE_DESTINATION_JSON, 'en-tete', REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo MODE_DEBUG === true ? 'On crée le sitemap <br/>' : null;
+        Logger::info("Création du sitemap.");
         creationSitemap(REPERTOIRE_DESTINATION_JSON, REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, 'en-tete', REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo MODE_DEBUG === true ? 'On crée le fichier robots.txt <br/>' : null;
+        Logger::info("Création du fichier robots.txt.");
         creationRobotsTxT(REPERTOIRE_DESTINATION_RENDU_PHP);
-        echo MODE_DEBUG === true ? 'On crée le fichier .htaccess <br/>' : null;
+        Logger::info("Création du fichier .htaccess.");
         creationHtaccess(REPERTOIRE_DESTINATION_RENDU_PHP);
     }
 }
