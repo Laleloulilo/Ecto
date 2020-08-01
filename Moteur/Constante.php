@@ -18,6 +18,8 @@ define('EMOJI_5_MINUTES', '☕️');
 define('EMOJI_10_MINUTES', '🍻');
 // Gestion de la mise à jour d'Ecto
 define('NOMBRE_DE_SECONDES_AVANT_MISE_A_JOUR', 0);
+//Gestion des pages d'erreurs autorisés
+define('ERREUR_AUTORISES', array("403","404"));
 
 /*
  * Constantes techniques

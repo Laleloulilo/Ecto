@@ -115,16 +115,15 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
 function controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $estDossierPageErreur = false)
 {
     $infoIncompletes = empty($titre) || empty($timestampExact) || empty($description) || !is_bool($estPage);
-    if ($estDossierPageErreur && $titre != '404' && $titre != '403') {
-        //Dans le cas d'une page d'erreur seules certains titres sont pertinents (404,403 dans un premier temps)
-        return false;
-    } elseif ($infoIncompletes) {
-        return false;
-    } elseif (!$estDossierPageErreur && strlen($titre) == 3 && is_numeric($titre)) {
-        // On interdit tous les noms d'articles de trois chiffres pour éviter les doublons avec les pages d'erreurs
+    if (!$infoIncompletes) {
+        if (in_array($titre, ERREUR_AUTORISES)) {
+            // Les titres des pages d'erreurs sont réservés aux pages d'erreurs.
+            return $estDossierPageErreur;
+        }
+        return true;
+    } else {
         return false;
     }
-    return true;
 }
 
 function creerListingEntete($dossierDestination)
