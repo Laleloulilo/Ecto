@@ -15,7 +15,6 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
     if (file_exists($chemin)) {
         $json = file_get_contents($chemin);
         $json_data = json_decode($json, true);
-
         $listeIndexArticle = array();
         foreach ($json_data as $enTeteArticleBlog) {
             if (array_key_exists('titre', $enTeteArticleBlog)
@@ -23,7 +22,6 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
                 && array_key_exists('date', $enTeteArticleBlog)
                 && array_key_exists('nbMots', $enTeteArticleBlog)
                 && array_key_exists('categorie', $enTeteArticleBlog)) {
-
 
                 array_push($listeIndexArticle, array(
                     'titre' =>$enTeteArticleBlog['titre'],
@@ -34,7 +32,6 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
                     'description' =>$enTeteArticleBlog['description']));
             }
         }
-
         ob_start();
         require(LOCALISATION_TEMPLATE_CORPS_INDEX);
         $corpsPage = ob_get_clean();
@@ -84,39 +81,23 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
 
 function creationSitemap($dossierSourceArticle, $dossierSourceErreur, $nomFichierEnTete, $dossierDestinationRendu)
 {
-    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
-    $xml .= '
-            <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-            xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
-    $xml .= '
-                        <url>
-                            <loc>' . ADRESSE_EXACTE_SITE . '/' . "index.php" . '</loc>
-                        </url>';
-    $dossiersSource = array(
-        $dossierSourceArticle,
-        $dossierSourceErreur
-    );
-    foreach ($dossiersSource as $dossierSource) {
+    $listePages = array();
+    foreach (array($dossierSourceArticle,$dossierSourceErreur) as $dossierSource) {
         $fichierEnTete = $dossierSource . "/" . $nomFichierEnTete . '.' . "json"; // On définit le chemin du fichier à utiliser.
         if (file_exists($fichierEnTete)) {
             $json = file_get_contents($fichierEnTete);
             $json_data = json_decode($json, true);
             // Création du fichier sitemap
-
             foreach ($json_data as $enTeteArticleBlog) {
                 if (array_key_exists('titre', $enTeteArticleBlog) && array_key_exists('url', $enTeteArticleBlog) && array_key_exists('date', $enTeteArticleBlog) && array_key_exists('nbMots', $enTeteArticleBlog)) {
-
-                    $xml .= '
-                        <url>
-                            <loc>' . ADRESSE_EXACTE_SITE . '/' . $enTeteArticleBlog['url'] . "." . "php" . '</loc>
-                        </url>';
+                    array_push($listePages, $enTeteArticleBlog['url']);
                 }
             }
         }
     }
-    $xml .= '</urlset>';
+    ob_start();
+    require(LOCALISATION_TEMPLATE_SITEMAP);
+    $xml = ob_get_clean();
     // index est le nom utilisé pour la première page d'un site sur la majorité des serveurs
     $fichierSitemap = fopen($dossierDestinationRendu . '/' . NOM_FICHIER_SITEMAP, 'w');
     fwrite($fichierSitemap, $xml);
@@ -126,51 +107,10 @@ function creationSitemap($dossierSourceArticle, $dossierSourceErreur, $nomFichie
 
 function creationHtaccess($dossierDestinationRendu)
 {
-    $htaccess = "";
-    if (REDIRECTION_HTTPS) {
-        $htaccess .= "RewriteEngine On";
-        $htaccess .= "\nRewriteCond %{SERVER_PORT} 80";
-        $htaccess .= "\nRewriteRule ^(.*)$ " . ADRESSE_EXACTE_SITE . "/$1 [R=301,L]";
-    }
-    $htaccess .= "\n" . '<IfModule mod_headers.c>
-Header always set X-FRAME-OPTIONS "DENY"
-</IfModule>
 
-<IfModule mod_headers.c>
-Header always set X-XSS-Protection "1; mode=block"
-</IfModule>
-
-<IfModule mod_headers.c>
-Header set Content-Security-Policy "script-src \'self\' https://www.google.com"
-</IfModule>
-
-<IfModule mod_headers.c>
-Header always set X-Content-Type-Options "nosniff"
-</IfModule>
-
-<IfModule mod_deflate.c>
-AddOutputFilterByType DEFLATE text/plain
-AddOutputFilterByType DEFLATE text/html
-AddOutputFilterByType DEFLATE text/xml
-AddOutputFilterByType DEFLATE text/shtml
-AddOutputFilterByType DEFLATE text/css
-AddOutputFilterByType DEFLATE application/xml
-AddOutputFilterByType DEFLATE application/xhtml+xml
-AddOutputFilterByType DEFLATE application/rss+xml
-AddOutputFilterByType DEFLATE application/javascript
-AddOutputFilterByType DEFLATE application/x-javascript
-</IfModule> ';
-
-    $adresseErreur404 = $dossierDestinationRendu . '/' . "404.php";
-    $adresseErreur403 = $dossierDestinationRendu . '/' . "403.php";
-
-    if (file_exists($adresseErreur404)) {
-        $htaccess .= "\nErrorDocument 404 " . ADRESSE_EXACTE_SITE . "/" . "404.php";
-    }
-    if (file_exists($adresseErreur403)) {
-        $htaccess .= "\nErrorDocument 403 " . ADRESSE_EXACTE_SITE . "/" . "403.php";
-    }
-
+    ob_start();
+    require(LOCALISATION_TEMPLATE_HTACCESS);
+    $htaccess = ob_get_clean();
     // index est le nom utilisé pour la première page d'un site sur la majorité des serveurs
     $fichierHtaccess = fopen($dossierDestinationRendu . '/.htaccess', 'w');
     fwrite($fichierHtaccess, $htaccess);
@@ -186,14 +126,12 @@ function creationRobotsTxT($dossierDestinationRendu)
     // On donne l'adresse du fichier sitemap
     $robotsTxT .= 'Sitemap :' . ADRESSE_EXACTE_SITE . '/' . NOM_FICHIER_SITEMAP . '\n';
     $robotsTxT .= 'Allow:/' . '\n';
-
     // Suppression à l'indexation de tous les répertoires autres que celui du rendu
     $dir = '../';
     // si le dossier racine existe (ce qui semble évident) et qu'il contient quelque chose
     if (is_dir($dir) && $dh = opendir($dir)) {
         // boucler tant que quelque chose est trouve
         while (($file = readdir($dh)) !== false) {
-
             // affiche le nom et le type si ce n'est pas un element du systeme
             if (is_dir($dir . $file) && $file != '.' && $file != '..' && $file != $dossierDestinationRendu) {
                 // on interdit le parcours de tous les dossiers hormis celui de rendu

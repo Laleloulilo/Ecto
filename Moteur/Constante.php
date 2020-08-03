@@ -18,7 +18,7 @@ define('EMOJI_5_MINUTES', '☕️');
 define('EMOJI_10_MINUTES', '🍻');
 // Gestion de la mise à jour d'Ecto
 define('NOMBRE_DE_SECONDES_AVANT_MISE_A_JOUR', 1);
-//Gestion des pages d'erreurs autorisés
+//Gestion des pages d'erreurs autorisés (pour le moment ecto ne gère que 403 et 404)
 define('ERREUR_AUTORISES', array("403","404"));
 
 /*
@@ -33,6 +33,8 @@ define('LOCALISATION_TEMPLATE_CORPS_ARTICLE', '../Moteur/Template/templateCorpsP
 define('LOCALISATION_TEMPLATE_CORPS_INDEX', '../Moteur/Template/templateCorpsIndex.php');
 define('LOCALISATION_HEADER_TEMPLATE', '../Moteur/Template/header.php');
 define('LOCALISATION_FOOTER_TEMPLATE', '../Moteur/Template/footer.php');
+define('LOCALISATION_TEMPLATE_SITEMAP', '../Moteur/Template/templateSitemap.php');
+define('LOCALISATION_TEMPLATE_HTACCESS', '../Moteur/Template/templateHtaccess.php');
 define('DOSSIER_ELEMENTS_DESIGN_TEMPLATE', '../Moteur/Template/ElementsAnnexes');
 define('TAILLE_MAX_RESSOURCES', 300 * 1024); //en octets
 define('REPERTOIRE_BUILD', '../Moteur/Build');
