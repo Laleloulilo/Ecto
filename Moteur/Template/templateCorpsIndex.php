@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="./Images/favicon.png"/>
     <link rel="stylesheet" type="text/css" href="./style/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="./style/modifications.css"/>
-    <title><?= $titre ?></title>
+    <title><?= NOM_PAGE_ACCUEIL ?> : <?php NOM_DU_SITE ?></title>
 </head>
 <body>
 

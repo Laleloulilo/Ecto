@@ -16,8 +16,6 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
         $json = file_get_contents($chemin);
         $json_data = json_decode($json, true);
 
-        $titre = NOM_PAGE_ACCUEIL . ' : ' . NOM_DU_SITE;
-
         $listeIndexArticle = array();
         foreach ($json_data as $enTeteArticleBlog) {
             if (array_key_exists('titre', $enTeteArticleBlog)
@@ -62,14 +60,10 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
             $json_data = json_decode($json, true);
 
             if (array_key_exists('enTete', $json_data) && array_key_exists('contenu', $json_data)) {
-                $categorie = $json_data['enTete']['categorie'];
-                $format_article = $json_data['enTete']['formatArticle'];
-                $format_page = $json_data['enTete']['formatPage'];
-                $titre = $json_data['enTete']['titre'];
-                $date = $json_data['enTete']['date'];
-                $contenu = $json_data['contenu'];
-                $description = $json_data['enTete']['description'];
-                $nbMots = $json_data['enTete']['nbMots'];
+
+                //Création des variables pour insertion dans le template en décomposant le json
+                extract($json_data['enTete']);
+                extract($json_data);
 
                 ob_start();
                 require(LOCALISATION_TEMPLATE_CORPS_ARTICLE);

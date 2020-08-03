@@ -19,7 +19,7 @@
     <article>
         <header>
             <h1><?= $titre ?></h1>
-            <?php if ($format_article) { ?>
+            <?php if ($formatArticle) { ?>
                 <small><?= $date ?>
                     <?php if ($categorie != null) { ?>
                         • <em><?= $categorie ?></em>
