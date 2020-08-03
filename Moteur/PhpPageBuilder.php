@@ -24,12 +24,12 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
                 && array_key_exists('categorie', $enTeteArticleBlog)) {
 
                 array_push($listeIndexArticle, array(
-                    'titre' =>$enTeteArticleBlog['titre'],
-                    'url' =>$enTeteArticleBlog['url'],
-                    'date' =>$enTeteArticleBlog['date'],
-                    'nbMots' =>$enTeteArticleBlog['nbMots'],
-                    'categorie' =>$enTeteArticleBlog['categorie'],
-                    'description' =>$enTeteArticleBlog['description']));
+                    'titre' => $enTeteArticleBlog['titre'],
+                    'url' => $enTeteArticleBlog['url'],
+                    'date' => $enTeteArticleBlog['date'],
+                    'nbMots' => $enTeteArticleBlog['nbMots'],
+                    'categorie' => $enTeteArticleBlog['categorie'],
+                    'description' => $enTeteArticleBlog['description']));
             }
         }
         ob_start();
@@ -82,7 +82,7 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
 function creationSitemap($dossierSourceArticle, $dossierSourceErreur, $nomFichierEnTete, $dossierDestinationRendu)
 {
     $listePages = array();
-    foreach (array($dossierSourceArticle,$dossierSourceErreur) as $dossierSource) {
+    foreach (array($dossierSourceArticle, $dossierSourceErreur) as $dossierSource) {
         $fichierEnTete = $dossierSource . "/" . $nomFichierEnTete . '.' . "json"; // On définit le chemin du fichier à utiliser.
         if (file_exists($fichierEnTete)) {
             $json = file_get_contents($fichierEnTete);
@@ -120,27 +120,25 @@ function creationHtaccess($dossierDestinationRendu)
 
 function creationRobotsTxT($dossierDestinationRendu)
 {
-    // Création du fichier robots.txt
-    // Choix du user-agent
-    $robotsTxT = 'User-agent: *' . '\n';
-    // On donne l'adresse du fichier sitemap
-    $robotsTxT .= 'Sitemap :' . ADRESSE_EXACTE_SITE . '/' . NOM_FICHIER_SITEMAP . '\n';
-    $robotsTxT .= 'Allow:/' . '\n';
     // Suppression à l'indexation de tous les répertoires autres que celui du rendu
-    $dir = '../';
+    $dossier = '../';
     // si le dossier racine existe (ce qui semble évident) et qu'il contient quelque chose
-    if (is_dir($dir) && $dh = opendir($dir)) {
+    $listeRepertoiresInterdits = array();
+    if (is_dir($dossier) && $dossierOuvert = opendir($dossier)) {
         // boucler tant que quelque chose est trouve
-        while (($file = readdir($dh)) !== false) {
+        while (($fichier = readdir($dossierOuvert)) !== false) {
             // affiche le nom et le type si ce n'est pas un element du systeme
-            if (is_dir($dir . $file) && $file != '.' && $file != '..' && $file != $dossierDestinationRendu) {
+            if (is_dir($dossier . $fichier) && $fichier != '.' && $fichier != '..' && $fichier != $dossierDestinationRendu) {
                 // on interdit le parcours de tous les dossiers hormis celui de rendu
-                $robotsTxT .= 'Disallow: /' . $file . '/' . '\n';
+                array_push($listeRepertoiresInterdits, $fichier);
             }
         }
         // on ferme la connection
-        closedir($dh);
+        closedir($dossierOuvert);
     }
+    ob_start();
+    require(LOCALISATION_TEMPLATE_ROBOTS);
+    $robotsTxT = ob_get_clean();
     // Le nom du fichier robots.txt est imposé et standard
     $fichierRobotsTxT = fopen($dossierDestinationRendu . '/' . 'robots.txt', 'w');
     fwrite($fichierRobotsTxT, $robotsTxT);

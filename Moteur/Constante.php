@@ -35,6 +35,7 @@ define('LOCALISATION_HEADER_TEMPLATE', '../Moteur/Template/header.php');
 define('LOCALISATION_FOOTER_TEMPLATE', '../Moteur/Template/footer.php');
 define('LOCALISATION_TEMPLATE_SITEMAP', '../Moteur/Template/templateSitemap.php');
 define('LOCALISATION_TEMPLATE_HTACCESS', '../Moteur/Template/templateHtaccess.php');
+define('LOCALISATION_TEMPLATE_ROBOTS', '../Moteur/Template/templateRobotsTxt.php');
 define('DOSSIER_ELEMENTS_DESIGN_TEMPLATE', '../Moteur/Template/ElementsAnnexes');
 define('TAILLE_MAX_RESSOURCES', 300 * 1024); //en octets
 define('REPERTOIRE_BUILD', '../Moteur/Build');
