@@ -18,7 +18,7 @@ Mini CMS optimisé pour le blogging
 Pour le premier Test, vous pouvez changer l'adresse de votre site ainsi que différents éléments dans _..Php/Constante.php_ :
 - Répertoire des Billets _(par défaut ../Contenu/ContenuBillets)_ ;
 - Répertoire des Pages d'erreurs _(par défaut ../Contenu/PagesErreur)_ ;
-- Répertoire des images _(par défaut ../Contenu/Template/ElementsAnnexes/pictures)_ ;
+- Répertoire des images _(par défaut ../Contenu/Images)_ ;
 - L'adresse du site _(ADRESSE_EXACTE_SITE dans ..Php/Constante.php)_.
 
 ### Lancement
