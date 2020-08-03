@@ -19,10 +19,7 @@
         <article>
             <header>
                 <h2>
-                    <small> <a
-                            href='<?= $resumeArticle['url'] . '.' . 'php' ?>'><?= $resumeArticle['titre'] ?></a>
-                    </small>
-
+                    <small> <a href='<?= $resumeArticle['url'] . '.' . 'php' ?>'><?= $resumeArticle['titre'] ?></a></small>
                 </h2>
                 <small><?= $resumeArticle['date'] ?> • <em>
                         <?= $resumeArticle['categorie'] ?></em>

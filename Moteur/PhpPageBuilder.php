@@ -37,11 +37,11 @@ function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinatio
         $corpsPage = ob_get_clean();
         $header = file_get_contents(LOCALISATION_HEADER_TEMPLATE);
         $footer = file_get_contents(LOCALISATION_FOOTER_TEMPLATE);
-        $page = $header . $corpsPage . $footer;
+        $page = $header . tidy_repair_string ($corpsPage) . $footer;
         // index est le nom utilisé pour la première page d'un site sur la majorité des serveurs
-        $fichierEnTete = fopen($dossierDestinationRendu . '/' . 'index.php', 'w');
-        fwrite($fichierEnTete, $page);
-        fclose($fichierEnTete);
+        $fichier = fopen($dossierDestinationRendu . '/' . 'index.php', 'w');
+        fwrite($fichier, $page);
+        fclose($fichier);
     }
     return null;
 }
@@ -68,10 +68,10 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
 
                 $header = file_get_contents(LOCALISATION_HEADER_TEMPLATE);
                 $footer = file_get_contents(LOCALISATION_FOOTER_TEMPLATE);
-                $page = $header . $corpsPage . $footer;
-                $fichierEnTete = fopen($dossierDestinationRendu . '/' . $json_data['enTete']['url'] . '.' . 'php', 'w');
-                fwrite($fichierEnTete, $page);
-                fclose($fichierEnTete);
+                $page = $header . tidy_repair_string ($corpsPage) . $footer;
+                $fichier = fopen($dossierDestinationRendu . '/' . $json_data['enTete']['url'] . '.' . 'php', 'w');
+                fwrite($fichier, $page);
+                fclose($fichier);
             }
         }
     }
