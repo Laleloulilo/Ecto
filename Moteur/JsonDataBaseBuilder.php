@@ -3,9 +3,9 @@
 function traiterRepertoireJsonArticleMarkdown($dossierSource, $dossierDestinationRendu, $estDossierPageErreur = false, $estPage = false)
 {
     // Nettoyage de la destination
-    echo MODE_DEBUG === true ? 'Je check si le dossier existe. <br>' : null;
+    Logger::info('Je check si le dossier existe.');
     dossierExistantOuLeCreer($dossierDestinationRendu);
-    echo MODE_DEBUG === true ? 'Le dossier a été créé. <br>' : null;
+    Logger::info('Le dossier a été créé.');
     nettoyageDossierDestinationHorsSousDossier($dossierDestinationRendu);
     // Listing des fichiers à traiter.
     $repertoire = opendir($dossierSource); // On définit le répertoire dans lequel on souhaite travailler.
@@ -137,7 +137,7 @@ function creerListingEntete($dossierDestination)
     // On ordonne le fichier d'en-tête par date
     $resultat = array_multisort($colonne, SORT_DESC, $listeEnTete);
     if (!$resultat) {
-        error_log('On a un gros problème à la génération du json');
+        Logger::error('On a un gros problème à la génération du json');
     }
     fwrite($fichierEnTete, json_encode($listeEnTete));
     fclose($fichierEnTete);
