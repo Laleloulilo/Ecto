@@ -21,7 +21,6 @@ function calculInformationLongueurLecture($contenu_article)
     $chaine_retour = '';
     // Arrondi à l'entier supérieur du nombre de minutes nécessaires pour lire l'article
     $minute_lecture = ceil(str_word_count(strip_tags($contenu_article)) / MOT_PAR_MINUTE);
-
     // Si l'utilisateur à choisi d'assortir son temps de lecture d'emji, on en rajoute.
     if (EMOJI_LONGUEUR_LECTURE) {
         $compteur = $minute_lecture;
@@ -46,7 +45,7 @@ function calculInformationLongueurLecture($contenu_article)
 
 function correctionCheminImage($contenu, $cheminDossierImage)
 {
-    $enTeteGeneriqueSourceImage ='src="./';
+    $enTeteGeneriqueSourceImage = 'src="./';
     return $contenu = str_replace($enTeteGeneriqueSourceImage, $enTeteGeneriqueSourceImage . $cheminDossierImage . '/', $contenu);
 }
 
@@ -60,9 +59,7 @@ function verifierExtensionFichier($fichierAControler, $extensionSouhaitee)
 function transformerTitreEnUrlValide($titre, $charset = 'utf-8')
 {
     $titre = trim($titre);
-
     $titre = htmlentities($titre, ENT_NOQUOTES, $charset);
-
     $titre = preg_replace('#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $titre);
     $titre = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $titre);
     $titre = preg_replace('#&[^;]+;#', '', $titre);
@@ -79,33 +76,27 @@ function verifierNombreBlocDansFichier($contenuFichierAAnalyser, $nombreDeBlocSo
     return count($contenuMD) >= $nombreDeBlocSouhaite + 1;
 }
 
-function dossierExistantOuLeCreer($path)
+function dossierExistantOuLeCreer($chemin)
 {
-    if (is_dir($path)) {
+    if (is_dir($chemin)) {
         return true;
     } else {
-        return mkdir($path);
+        return mkdir($chemin);
     }
 }
 
 function copierDossierEtSousDossier($origine, $destination)
 {
-    $test = scandir($origine);
+    $contenuDossierOrigine = scandir($origine);
 
-    $file = 0;
-    $file_tot = 0;
-
-    foreach ($test as $val) {
-        if ($val != '.' && $val != '..') {
-            if (is_dir($origine . '/' . $val)) {
-                dossierExistantOuLeCreer($destination . '/' . $val);
-                copierDossierEtSousDossier($origine . '/' . $val, $destination . '/' . $val);
+    foreach ($contenuDossierOrigine as $elementOrigine) {
+        if ($elementOrigine != '.' && $elementOrigine != '..') {
+            if (is_dir($origine . '/' . $elementOrigine)) {
+                dossierExistantOuLeCreer($destination . '/' . $elementOrigine);
+                copierDossierEtSousDossier($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
             } else {
-                $file_tot++;
-                if (copy($origine . '/' . $val, $destination . '/' . $val)) {
-                    $file++;
-                } else if (!file_exists($origine . '/' . $val)) {
-                    echo $origine . '/' . $val;
+                if (copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine)) {
+                    Logger::error("Problème lors de la copie du fichier : ".$origine . '/' . $elementOrigine);
                 }
             }
         }
@@ -113,7 +104,7 @@ function copierDossierEtSousDossier($origine, $destination)
     return true;
 }
 
-function nettoyageDossierDestinationIncluantSousDossier($dossier)
+function viderDossierDestinationIncluantSousDossier($dossier)
 {
     if (substr($dossier, -1) == '/') {
         $dossier = substr($dossier, 0, -1);
@@ -126,7 +117,7 @@ function nettoyageDossierDestinationIncluantSousDossier($dossier)
             if ($contenuDossier != '.' && $contenuDossier != '..') {
                 $chemin = $dossier . '/' . $contenuDossier;
                 if (is_dir($chemin)) {
-                    nettoyageDossierDestinationIncluantSousDossier($chemin);
+                    viderDossierDestinationIncluantSousDossier($chemin);
                 } else {
                     unlink($chemin);
                 }
@@ -138,17 +129,16 @@ function nettoyageDossierDestinationIncluantSousDossier($dossier)
 
 function connaitreDateDerniereModificationDossier($dossier)
 {
-    $iterator = new DirectoryIterator($dossier);
-
-    $mtime = 0;
-    foreach ($iterator as $fileinfo) {
-        if ($fileinfo->isFile() && $fileinfo->getMTime() > $mtime) {
-            $mtime = $fileinfo->getMTime();
-        }else if($fileinfo->isDir() && $fileinfo->getFilename()!='..' && $fileinfo->getFilename()!='.' ){
-            $tempsdossier = connaitreDateDerniereModificationDossier($dossier.'/'.$fileinfo->getFilename());
-            $mtime = max($mtime,$tempsdossier);
+    $iterateurDossier = new DirectoryIterator($dossier);
+    $timestampDerniereModificationDossier = 0;
+    foreach ($iterateurDossier as $fichier) {
+        if ($fichier->isFile() && $fichier->getMTime() > $timestampDerniereModificationDossier) {
+            $timestampDerniereModificationDossier = $fichier->getMTime();
+        } else if ($fichier->isDir() && $fichier->getFilename() != '..' && $fichier->getFilename() != '.') {
+            $tempsdossier = connaitreDateDerniereModificationDossier($dossier . '/' . $fichier->getFilename());
+            $timestampDerniereModificationDossier = max($timestampDerniereModificationDossier, $tempsdossier);
         }
     }
-    return $mtime;
+    return $timestampDerniereModificationDossier;
 }
 

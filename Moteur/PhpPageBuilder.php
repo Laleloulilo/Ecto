@@ -6,7 +6,7 @@
 function nettoyageEtSetupDossier($dossierANettoyer)
 {
     dossierExistantOuLeCreer($dossierANettoyer);
-    nettoyageDossierDestinationIncluantSousDossier($dossierANettoyer);
+    viderDossierDestinationIncluantSousDossier($dossierANettoyer);
 }
 
 function creationIndexBlog($dossierSource, $nomFichierEnTete, $dossierDestinationRendu)
@@ -62,7 +62,6 @@ function rendufichiersArticle($dossierSource, $dossierDestinationRendu)
             $json_data = json_decode($json, true);
 
             if (array_key_exists('enTete', $json_data) && array_key_exists('contenu', $json_data)) {
-                $titre = $json_data['enTete']['titre'] . ' : ' . NOM_DU_SITE;
                 $categorie = $json_data['enTete']['categorie'];
                 $format_article = $json_data['enTete']['formatArticle'];
                 $format_page = $json_data['enTete']['formatPage'];

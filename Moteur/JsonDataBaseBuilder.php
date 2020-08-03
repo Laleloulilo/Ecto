@@ -43,11 +43,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
         $description = null;
         $url = null;
         $nbMots = null;
-        //Cas particulier des pages d'erreur
-        if ($EstDossierPageErreur) {
-            $timestampExact = time();
-            $description = 'page d\'erreur';
-        }
+
         $fichierAManipuler = $dossierSource . '/' . $nomFichier;
         $contenu_du_fichier = file_get_contents($fichierAManipuler);
         $fichiervalide = verifierNombreBlocDansFichier($contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN, DELIMITEUR_BLOCS_MARKDOWN);
@@ -68,11 +64,8 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
                         break;
                     case 'date':
                         // Uniformisation de la date
-                        $timestampExact = strtotime(trim($pieces[1]));
                         //parfois strtotime présente un bug de transcription de date, dans ce cas on remplace les / par des tirets
-                        if ($timestampExact === FALSE) {
-                            $timestampExact = strtotime(str_replace('/', '-', trim($pieces[1])));
-                        }
+                        $timestampExact = strtotime(str_replace('/', '-', trim($pieces[1])));
                         break;
                     case 'description':
                         $description = mb_convert_encoding(trim($pieces[1]), $encodageUtilise, $encodageUtilise);
@@ -82,6 +75,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
                 }
             }
         }
+
         if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $EstDossierPageErreur)) {
             //Parfois les fichiers embarquent plusieurs '---' car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
             $contenuMD = explode(DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
@@ -99,11 +93,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
             $article = new Article($entete, $contenuEditorial);
             // Enregistrement de l'article
             $fichierArticle = fopen($dossierDestinationRendu . '/' . $url . '.' . 'json', 'w');
-            try {
-                fwrite($fichierArticle, json_encode($article, JSON_THROW_ON_ERROR));
-            } catch (Exception $e) {
-                Logger::error("Exception : ", [$e->getMessage()]);
-            }
+            fwrite($fichierArticle, json_encode($article));
             fclose($fichierArticle);
         }
     }

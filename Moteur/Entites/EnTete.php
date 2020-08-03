@@ -15,12 +15,17 @@ class EnTete
 
     public function __construct($titre, $description, $url, $nbMots, $timestamp_date, $categorie, $formatPage)
     {
+        if($formatPage){
+            //Si c'est l'en-tête d'une page le temps est remplit automatiquement à la date du jour de compilation
+            $this->timestamp_date = time();
+        }else{
+            $this->timestamp_date = $timestamp_date;
+        }
         $this->date = ucwords(strftime(FORMAT_DATE, $timestamp_date));
         $this->titre = $titre;
         $this->description = $description;
         $this->url = $url;
         $this->nbMots = $nbMots;
-        $this->timestamp_date = $timestamp_date;
         $this->categorie = $categorie;
         $this->formatPage = $formatPage;
         $this->formatArticle = !$formatPage;
