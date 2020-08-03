@@ -32,7 +32,7 @@ if (file_exists(REPERTOIRE_DESTINATION_RENDU_PHP . '/' . "403.php")) { ?>
 }
 if (REDIRECTION_HTTPS) { ?>
     RewriteEngine On
-    RewriteCond %{SERVER_PORT} 80
-    RewriteRule ^(.*)$ " . <?=ADRESSE_EXACTE_SITE?>/$1 [R=301,L]
+    RewriteCond %{HTTPS} !on
+    RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
 <?php } ?>
 
