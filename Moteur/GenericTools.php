@@ -95,7 +95,8 @@ function copierDossierEtSousDossier($origine, $destination)
                 dossierExistantOuLeCreer($destination . '/' . $elementOrigine);
                 copierDossierEtSousDossier($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
             } else {
-                if (copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine)) {
+                $copieReussie=copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
+                if (!$copieReussie) {
                     Logger::error("Problème lors de la copie du fichier : ".$origine . '/' . $elementOrigine);
                 }
             }
