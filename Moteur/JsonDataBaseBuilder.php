@@ -76,6 +76,8 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
             }
         }
 
+        Logger::info("Controle du fichier : ".$nomFichier);
+
         if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $EstDossierPageErreur)) {
             //Parfois les fichiers embarquent plusieurs '---' car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
             $contenuMD = explode(DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
@@ -103,9 +105,10 @@ function controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $de
 {
     $infoIncompletes = empty($titre) || empty($timestampExact) || empty($description) || !is_bool($estPage);
     if (!$infoIncompletes) {
-        if (in_array($titre, ERREUR_AUTORISES)) {
+        if (!in_array($titre, ERREUR_AUTORISES)) {
             // Les titres des pages d'erreurs sont réservés aux pages d'erreurs.
-            return $estDossierPageErreur;
+            logger::info('page d\'erreur autorisée');
+            return !$estDossierPageErreur;
         }
         return true;
     } else {

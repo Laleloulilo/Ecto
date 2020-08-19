@@ -15,7 +15,7 @@
     <h2 id='titre_accueil'>
         <a href='<?= ADRESSE_EXACTE_SITE ?>'><?= NOM_DU_SITE ?></a>
     </h2>
-    <p class='sous-titre lead'><?php echo DESCRIPTION_PAGE_ACCUEIL ?></p>
+    <p class='sous-titre lead'><?= DESCRIPTION_PAGE_ACCUEIL ?></p>
     <article>
         <header>
             <h1><?= $titre ?></h1>
