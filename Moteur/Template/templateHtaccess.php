@@ -20,9 +20,10 @@
 <IfModule mod_rewrite.c>
     <?php if (REDIRECTION_HTTPS) { ?>
         RewriteEngine On
-        RewriteCond %{HTTPS} !on
-        RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
-        RewriteRule ^([/0-9a-zA-Z-]+)\.html$ test.php?resource=$1 [L,QSA]
+        RewriteCond %{HTTPS} off
+        RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+        RewriteCond %{HTTP_HOST} !^www\. [NC]
+        RewriteRule .* https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     <?php } ?>
 </IfModule>
 <?php
