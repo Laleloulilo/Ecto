@@ -4,9 +4,12 @@
     <meta charset="UTF-8"/>
     <meta name="Description" content=" <?= $description ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="<?= $titre ?> : <?= NOM_DU_SITE ?>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<?=ADRESSE_EXACTE_SITE.'/'.$url.'.php' ?>" />
+    <meta property="og:image" content="<?=ADRESSE_EXACTE_SITE.'/'.REPERTOIRE_IMAGE.'/'.NOM_IMAGE_OPEN_GRAPH ?>" />
     <link rel="icon" type="image/png" href="./Images/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="./style/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="./style/modifications.css"/>
+    <link rel="stylesheet" type="text/css" href="./style/main.css"/>
     <title><?= $titre ?> : <?= NOM_DU_SITE ?></title>
 </head>
 <body>
