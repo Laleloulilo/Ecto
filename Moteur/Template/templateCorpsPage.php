@@ -10,7 +10,7 @@
     <meta property="og:image" content="<?=ADRESSE_EXACTE_SITE.'/'.REPERTOIRE_IMAGE.'/'.NOM_IMAGE_OPEN_GRAPH ?>" />
     <link rel="icon" type="image/png" href="./Images/favicon.png"/>
     <link rel="stylesheet" type="text/css" href="./style/main.css"/>
-    <title><?= $titre ?> : <?= NOM_DU_SITE ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Nunito&display=swap" rel="stylesheet">    <title><?= $titre ?> : <?= NOM_DU_SITE ?></title>
 </head>
 <body>
 
@@ -19,9 +19,9 @@
         <a href='<?= ADRESSE_EXACTE_SITE ?>'><?= NOM_DU_SITE ?></a>
     </h2>
     <p class='sous-titre lead'><?= DESCRIPTION_PAGE_ACCUEIL ?></p>
-    <article>
+    <article class="article-seul">
         <header>
-            <h1><?= $titre ?></h1>
+            <h1 class="titre-article"><?= $titre ?></h1>
             <?php if ($formatArticle) { ?>
                 <small><?= $date ?>
                     <?php if ($categorie != null) { ?>
@@ -32,4 +32,5 @@
         </header>
         <p><?= $contenu ?></p>
     </article>
+
 
