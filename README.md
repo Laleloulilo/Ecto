@@ -1,6 +1,6 @@
 # Ecto
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)  [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](http://forthebadge.com)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Laleloulilo_Ecto&metric=alert_status)](https://sonarcloud.io/dashboard?id=Laleloulilo_Ecto)
 
 Mini CMS optimisé pour le blogging
 
@@ -14,11 +14,12 @@ Mini CMS optimisé pour le blogging
 ### Pré-requis
 
 - Php installé (version codée sous Php 7.3)
+- Extension tidy activée
 
 Pour le premier Test, vous pouvez changer l'adresse de votre site ainsi que différents éléments dans _..Php/Constante.php_ :
 - Répertoire des Billets _(par défaut ../Contenu/ContenuBillets)_ ;
 - Répertoire des Pages d'erreurs _(par défaut ../Contenu/PagesErreur)_ ;
-- Répertoire des images _(par défaut ../Contenu/Template/ElementsAnnexes/pictures)_ ;
+- Répertoire des images _(par défaut ../Contenu/Images)_ ;
 - L'adresse du site _(ADRESSE_EXACTE_SITE dans ..Php/Constante.php)_.
 
 ### Lancement
