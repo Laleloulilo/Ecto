@@ -15,9 +15,9 @@
 <body>
 
 <div class="contenu container-fluid">
-    <h2 id='titre_accueil'>
+    <div id='titre_accueil'>
         <a href='<?= ADRESSE_EXACTE_SITE ?>'><?= NOM_DU_SITE ?></a>
-    </h2>
+    </div>
     <p class='sous-titre lead'><?= DESCRIPTION_PAGE_ACCUEIL ?></p>
     <article class="article-seul">
         <header>
