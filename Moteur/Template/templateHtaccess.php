@@ -1,4 +1,3 @@
-
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/plain
     AddOutputFilterByType DEFLATE text/html
@@ -14,7 +13,7 @@
 <IfModule mod_headers.c>
     Header always set X-FRAME-OPTIONS "DENY"
     Header always set X-XSS-Protection "1; mode=block"
-    Header set Content-Security-Policy "script-src 'self' https://www.google.com"
+    Header set Content-Security-Policy "default-src 'self' https://www.google-analytics.com 'unsafe-inline'"
     Header always set X-Content-Type-Options "nosniff"
 </IfModule>
 <IfModule mod_rewrite.c>
