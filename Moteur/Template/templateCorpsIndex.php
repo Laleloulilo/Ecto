@@ -10,7 +10,7 @@
     <meta property="og:image" content="<?=ADRESSE_EXACTE_SITE.'/'.REPERTOIRE_IMAGE.'/'.NOM_IMAGE_OPEN_GRAPH ?>" />
     <link rel="icon" type="image/png" href="./Images/favicon.png"/>
     <link rel="stylesheet" type="text/css" href="./style/main.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Nunito&display=swap" rel="stylesheet">    <title><?= NOM_PAGE_ACCUEIL ?> : <?= NOM_DU_SITE ?></title>
+    <title><?= NOM_PAGE_ACCUEIL ?> : <?= NOM_DU_SITE ?></title>
 </head>
 <body>
 
