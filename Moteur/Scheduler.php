@@ -28,7 +28,7 @@ function processusGlobalGenerationSite()
         creerListingEntete(REPERTOIRE_DESTINATION_JSON);
         Logger::info("Création listing pages d'erreur.");
         creerListingEntete(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
-        Logger::info("FMise en place des templates.");
+        Logger::info("Mise en place des templates.");
         copierDossierEtSousDossier(DOSSIER_ELEMENTS_DESIGN_TEMPLATE, REPERTOIRE_DESTINATION_RENDU_PHP);
         Logger::info("Mise en place des images.");
         dossierExistantOuLeCreer(REPERTOIRE_CONTENU_IMAGE);
