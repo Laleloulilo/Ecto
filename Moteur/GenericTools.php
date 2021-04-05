@@ -91,19 +91,78 @@ function copierDossierEtSousDossier($origine, $destination)
 
     foreach ($contenuDossierOrigine as $elementOrigine) {
         if ($elementOrigine != '.' && $elementOrigine != '..') {
+            $copieReussie = false;
             if (is_dir($origine . '/' . $elementOrigine)) {
                 dossierExistantOuLeCreer($destination . '/' . $elementOrigine);
                 copierDossierEtSousDossier($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
             } else {
-                $copieReussie=copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
+                $extensionImage = array("jpg", "jpeg", "gif", "png");
+                $extension = pathinfo($elementOrigine, PATHINFO_EXTENSION);
+
+                if (in_array($extension, $extensionImage)) {
+                    $copieReussie = copierImage($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine, $extension);
+                } else {
+                    $copieReussie = copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
+                }
                 if (!$copieReussie) {
-                    Logger::error("Problème lors de la copie du fichier : ".$origine . '/' . $elementOrigine);
+                    Logger::error("Problème lors de la copie du fichier : " . $origine . '/' . $elementOrigine);
                 }
             }
         }
     }
     return true;
 }
+
+function copierImage($origine, $destination, $extension)
+{
+    // Définition de la largeur et de la hauteur maximale
+    $largeurMax = 700;
+    $hauteurMax = 10000;
+    // Cacul des nouvelles dimensions
+    list($largeurOrigine, $hauteurOrigine) = getimagesize($origine);
+
+    if ($largeurMax > $largeurOrigine) {
+        //Pas besoin de redimensionner si la largeur est déjà bonne
+        return copy($origine, $destination);
+    }
+
+    $ratio = $largeurOrigine / $hauteurOrigine;
+
+    if ($largeurMax / $hauteurMax > $ratio) {
+        $largeurMax = $hauteurMax * $ratio;
+    } else {
+        $hauteurMax = $largeurMax / $ratio;
+    }
+
+    switch ($extension) {
+        case "gif":
+            $nouvelleImage = imagecreatefromgif($origine);
+            break;
+        case "png":
+            $nouvelleImage = imagecreatefrompng($origine);
+            break;
+        default :
+            $nouvelleImage = imageCreateFromJpeg($origine);
+    }
+
+    $imageRedim = imageCreateTrueColor($largeurMax, $hauteurMax);
+    imagecopyresampled($imageRedim, $nouvelleImage, 0, 0, 0, 0, $largeurMax, $hauteurMax, $largeurOrigine, $hauteurOrigine);
+    switch ($extension) {
+        case "gif":
+            imagegif($imageRedim, $destination);
+            break;
+        case "png":
+            imagepng($imageRedim, $destination);
+            break;
+        default :
+            imagejpeg($imageRedim, $destination);
+    }
+
+    // Libération de la mémoire
+    imageDestroy($imageRedim);
+    return true;
+}
+
 
 function viderDossierDestinationIncluantSousDossier($dossier)
 {
