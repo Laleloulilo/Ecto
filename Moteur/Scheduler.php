@@ -77,7 +77,6 @@ function verifierNecessiteMiseAJour($timestampDerniereMaj)
     return ($miseAJour);
 }
 
-
 function miseAJourTimestamp()
 {
     $fichiertimestamp = fopen(NOM_FICHIER_VERIFICATION_TIMESTAMP, 'w');

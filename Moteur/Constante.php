@@ -1,8 +1,7 @@
 <?php
 
-/*
- * Constantes de paramétrage utilisateur
- */
+
+// Constantes de paramétrage utilisateur
 
 //Gestion de la vitesse de lecture moyenne
 define('MOT_PAR_MINUTE', 200);
@@ -22,12 +21,11 @@ define('NOMBRE_DE_SECONDES_AVANT_MISE_A_JOUR', 1);
 //Gestion des pages d'erreurs autorisés (pour le moment ecto ne gère que 403 et 404)
 define('ERREUR_AUTORISES', array("403","404"));
 
-/*
- * Constantes techniques
- */
-
+// Constantes techniques
 define('MODE_DEBUG', false);
 define('REDIRECTION_HTTPS', false);
+define('LARGEUR_MAX_IMAGES_EN_PIXEL', 700);
+define('HAUTEUR_MAX_EN_PIXEL', 10000);
 define('NIVEAU_COMPRESSION_IMAGES_JPG', 75); //0 à 100 (100 étant aucune compression)
 define('NIVEAU_COMPRESSION_IMAGES_PNG', 1); //0 à 9 (0 étant aucune compression)
 define('CATEGORIE_PAR_DEFAUT', 'Notes');

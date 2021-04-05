@@ -107,7 +107,6 @@ function creationSitemap($dossierSourceArticle, $dossierSourceErreur, $nomFichie
 
 function creationHtaccess($dossierDestinationRendu)
 {
-
     ob_start();
     require(LOCALISATION_TEMPLATE_HTACCESS);
     $htaccess = ob_get_clean();

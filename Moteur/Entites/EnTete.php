@@ -111,17 +111,11 @@ class EnTete
         $this->formatArticle = $formatArticle;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFormatPage()
     {
         return $this->formatPage;
     }
 
-    /**
-     * @param mixed $formatPage
-     */
     public function setFormatPage($formatPage)
     {
         $this->formatPage = $formatPage;

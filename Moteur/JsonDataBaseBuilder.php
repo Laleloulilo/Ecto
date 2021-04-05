@@ -74,7 +74,6 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
             }
         }
 
-
         if (controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $description, $estPage, $EstDossierPageErreur)) {
             //Parfois les fichiers embarquent plusieurs '---' car celui ci est utilisé pour tracer des lignes en markdown, on prend en compte ce cas
             $contenuMD = explode(DELIMITEUR_BLOCS_MARKDOWN, $contenu_du_fichier, NOMBRE_BLOC_FICHIER_MARKDOWN + 1);
@@ -131,7 +130,6 @@ function creerListingEntete($dossierDestination)
         }
     }
     $fichierEnTete = fopen($dossierDestination . '/en-tete.json', 'w');
-
     $colonne = array_column($listeEnTete, 'timestamp_date');
     // On ordonne le fichier d'en-tête par date
     array_multisort($colonne, SORT_DESC, $listeEnTete);
