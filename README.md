@@ -15,6 +15,7 @@ Mini CMS optimisé pour le blogging
 
 - Php installé (version codée sous Php 7.3)
 - Extension tidy activée
+- Extension GD activée
 
 Pour le premier Test, vous pouvez changer l'adresse de votre site ainsi que différents éléments dans _..Php/Constante.php_ :
 - Répertoire des Billets _(par défaut ../Contenu/ContenuBillets)_ ;
