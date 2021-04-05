@@ -95,15 +95,84 @@ function copierDossierEtSousDossier($origine, $destination)
                 dossierExistantOuLeCreer($destination . '/' . $elementOrigine);
                 copierDossierEtSousDossier($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
             } else {
-                $copieReussie=copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
-                if (!$copieReussie) {
-                    Logger::error("Problème lors de la copie du fichier : ".$origine . '/' . $elementOrigine);
+                $extensionImage = array("jpg", "jpeg", "gif", "png");
+                $extension = pathinfo($elementOrigine, PATHINFO_EXTENSION);
+                if (in_array($extension, $extensionImage)) {
+                    copierImage($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine, $extension);
+                } else {
+                    copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
                 }
             }
         }
     }
     return true;
 }
+
+function copierImage($origine, $destination, $extension)
+{
+    // Définition de la largeur et de la hauteur maximale
+    $largeurMax = 700;
+    $hauteurMax = 10000;
+    // Cacul des nouvelles dimensions
+    list($largeurOrigine, $hauteurOrigine) = getimagesize($origine);
+    $copieEffectuee = false;
+
+    if ($largeurMax > $largeurOrigine) {
+
+        //Pas besoin de redimensionner si la largeur est déjà bonne
+        switch ($extension) {
+            case "gif":
+                $nouvelleImage = imagecreatefromgif($origine);
+                $copieEffectuee=imagegif($nouvelleImage, $destination);
+                break;
+            case "png":
+                $nouvelleImage = imagecreatefrompng($origine);
+                $copieEffectuee=imagepng($nouvelleImage, $destination, NIVEAU_COMPRESSION_IMAGES_PNG);
+                break;
+            default :
+                $nouvelleImage = imageCreateFromJpeg($origine);
+                $copieEffectuee=imagejpeg($nouvelleImage, $destination, NIVEAU_COMPRESSION_IMAGES_JPG);
+        }
+        return $copieEffectuee;
+    }
+
+    $ratio = $largeurOrigine / $hauteurOrigine;
+
+    if ($largeurMax / $hauteurMax > $ratio) {
+        $largeurMax = $hauteurMax * $ratio;
+    } else {
+        $hauteurMax = $largeurMax / $ratio;
+    }
+
+    switch ($extension) {
+        case "gif":
+            $nouvelleImage = imagecreatefromgif($origine);
+            break;
+        case "png":
+            $nouvelleImage = imagecreatefrompng($origine);
+            break;
+        default :
+            $nouvelleImage = imageCreateFromJpeg($origine);
+    }
+
+    $imageRedim = imageCreateTrueColor($largeurMax, $hauteurMax);
+    imagecopyresampled($imageRedim, $nouvelleImage, 0, 0, 0, 0, $largeurMax, $hauteurMax, $largeurOrigine, $hauteurOrigine);
+    switch ($extension) {
+        case "gif":
+            $copieEffectuee=imagegif($imageRedim, $destination);
+            break;
+        case "png":
+            $copieEffectuee=imagepng($imageRedim, $destination, NIVEAU_COMPRESSION_IMAGES_PNG);
+            break;
+        default :
+            $copieEffectuee=imagejpeg($imageRedim, $destination, NIVEAU_COMPRESSION_IMAGES_JPG);
+    }
+
+    // Libération de la mémoire
+    imageDestroy($imageRedim);
+    return $copieEffectuee;
+}
+
 
 function viderDossierDestinationIncluantSousDossier($dossier)
 {

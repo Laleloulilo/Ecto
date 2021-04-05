@@ -7,45 +7,30 @@ require_once('Entites/Article.php');
 require_once('JsonDataBaseBuilder.php');
 require_once('PhpPageBuilder.php');
 require_once('GenericTools.php');
-require_once('Logger.php');
 setlocale(LC_TIME, ZONE_TEMPORELLE_HEURE);
 
 function processusGlobalGenerationSite()
 {
-    Logger::notice("Processus de mise à jour entamé.");
     if (analyseRefraichissementDelaiMiseAJourDonnee()) {
-        Logger::info("Mise à jour démarrée");
-        Logger::info("Vide les dossiers issus du build précédent ");
         nettoyageEtSetupDossier(REPERTOIRE_BUILD);
         nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
         nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_JSON);
         nettoyageEtSetupDossier(REPERTOIRE_DESTINATION_RENDU_PHP);
-        Logger::info("Formatage des pages d'erreur en json.");
         traiterRepertoireJsonArticleMarkdown(REPERTOIRE_PAGES_ERREUR, REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, true, true);
-        Logger::info("Formatage des pages articles en json.");
         traiterRepertoireJsonArticleMarkdown(REPERTOIRE_BILLETS, REPERTOIRE_DESTINATION_JSON);
-        Logger::info("Création listing articles.");
         creerListingEntete(REPERTOIRE_DESTINATION_JSON);
-        Logger::info("Création listing pages d'erreur.");
         creerListingEntete(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR);
-        Logger::info("Mise en place des templates.");
         copierDossierEtSousDossier(DOSSIER_ELEMENTS_DESIGN_TEMPLATE, REPERTOIRE_DESTINATION_RENDU_PHP);
-        Logger::info("Mise en place des images.");
         dossierExistantOuLeCreer(REPERTOIRE_CONTENU_IMAGE);
         nettoyageEtSetupDossier(REPERTOIRE_RENDU_IMAGE);
         copierDossierEtSousDossier(REPERTOIRE_CONTENU_IMAGE, REPERTOIRE_RENDU_IMAGE);
-        Logger::info("Création des rendus articles.");
         rendufichiersArticle(REPERTOIRE_DESTINATION_JSON, REPERTOIRE_DESTINATION_RENDU_PHP);
-        Logger::info("Création des pages d'erreur.");
         rendufichiersArticle(REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, REPERTOIRE_DESTINATION_RENDU_PHP);
-        Logger::info("Création de l'index.");
         creationIndexBlog(REPERTOIRE_DESTINATION_JSON, 'en-tete', REPERTOIRE_DESTINATION_RENDU_PHP);
-        Logger::info("Création du sitemap.");
         creationSitemap(REPERTOIRE_DESTINATION_JSON, REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR, 'en-tete', REPERTOIRE_DESTINATION_RENDU_PHP);
-        Logger::info("Création du fichier robots.txt.");
         creationRobotsTxT(REPERTOIRE_DESTINATION_RENDU_PHP);
-        Logger::info("Création du fichier .htaccess.");
         creationHtaccess(REPERTOIRE_DESTINATION_RENDU_PHP);
+        miseAJourTimestamp();
     }
 }
 
@@ -88,7 +73,8 @@ function verifierNecessiteMiseAJour($timestampDerniereMaj)
     $getLastModDirTemplate = connaitreDateDerniereModificationDossier(REPERTOIRE_TEMPLATE);
     $getLastModDirPHP = connaitreDateDerniereModificationDossier(REPERTOIRE_CODE_PHP);
     $getLastModDir = max($getLastModDirBillets, $getLastModDirPHP, $getLastModDirTemplate);
-    return ($timestampDerniereMaj - $getLastModDir < 0);
+    $miseAJour=$timestampDerniereMaj - $getLastModDir < 0;
+    return ($miseAJour);
 }
 
 
