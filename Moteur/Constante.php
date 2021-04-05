@@ -45,7 +45,6 @@ define('REPERTOIRE_BUILD', '../Moteur/Build');
 define('REPERTOIRE_DESTINATION_JSON', '../Moteur/Build/DataJson');
 define('REPERTOIRE_DESTINATION_JSON_PAGE_ERREUR', '../Moteur/Build/DataJsonErreur');
 define('REPERTOIRE_DESTINATION_RENDU_PHP', '../Rendu');
-define('REPERTOIRE_LOGS', '../Logs');
 define('REPERTOIRE_CODE_PHP', '../Moteur');
 define('REPERTOIRE_BILLETS', '../Contenu/ContenuBillets');
 define('REPERTOIRE_PAGES_ERREUR', '../Contenu/PagesErreur');

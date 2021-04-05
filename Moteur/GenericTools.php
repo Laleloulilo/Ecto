@@ -91,7 +91,6 @@ function copierDossierEtSousDossier($origine, $destination)
 
     foreach ($contenuDossierOrigine as $elementOrigine) {
         if ($elementOrigine != '.' && $elementOrigine != '..') {
-            $copieReussie = false;
             if (is_dir($origine . '/' . $elementOrigine)) {
                 dossierExistantOuLeCreer($destination . '/' . $elementOrigine);
                 copierDossierEtSousDossier($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
@@ -99,12 +98,9 @@ function copierDossierEtSousDossier($origine, $destination)
                 $extensionImage = array("jpg", "jpeg", "gif", "png");
                 $extension = pathinfo($elementOrigine, PATHINFO_EXTENSION);
                 if (in_array($extension, $extensionImage)) {
-                    $copieReussie = copierImage($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine, $extension);
+                    copierImage($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine, $extension);
                 } else {
-                    $copieReussie = copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
-                }
-                if (!$copieReussie) {
-                    Logger::error("Problème lors de la copie du fichier : " . $origine . '/' . $elementOrigine);
+                    copy($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine);
                 }
             }
         }
