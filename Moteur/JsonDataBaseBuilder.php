@@ -17,12 +17,12 @@ function traiterRepertoireJsonArticleMarkdown($dossierSource, $dossierDestinatio
             while (false !== ($nomEnfant = readdir($repertoireEnfant))) {
                 controlerEtFormaterJsonArticleMarkdown($nomEnfant, $dossierEnfant, $dossierDestinationRendu, $nomItem, $estPage, $estDossierPageErreur);
             }
-            closedir($repertoireEnfant); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
+            closedir($repertoireEnfant);
         } else {
             controlerEtFormaterJsonArticleMarkdown($nomItem, $dossierSource, $dossierDestinationRendu, CATEGORIE_PAR_DEFAUT, $estPage, $estDossierPageErreur);
         }
     }
-    closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
+    closedir($repertoire);
 }
 
 function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $dossierDestinationRendu, $categorie, $estPage, $EstDossierPageErreur = false)
@@ -62,7 +62,7 @@ function controlerEtFormaterJsonArticleMarkdown($nomFichier, $dossierSource, $do
                         break;
                     case 'date':
                         // Uniformisation de la date
-                        //parfois strtotime présente un bug de transcription de date, dans ce cas on remplace les / par des tirets
+                        // parfois strtotime présente un bug de transcription de date, dans ce cas on remplace les / par des tirets
                         $timestampExact = strtotime(str_replace('/', '-', trim($pieces[1])));
                         break;
                     case 'description':
@@ -114,7 +114,7 @@ function controlesBloquantEnTeteJsonArticleMarkdown($titre, $timestampExact, $de
 function creerListingEntete($dossierDestination)
 {
     $listeEnTete = array();
-    $repertoire = opendir($dossierDestination); // On définit le répertoire dans lequel on souhaite travailler.
+    $repertoire = opendir($dossierDestination);
     while (false !== ($fichier = readdir($repertoire))) // On lit chaque fichier du répertoire dans la boucle.
     {
         if (verifierExtensionFichier($fichier, 'json')) {
@@ -135,7 +135,7 @@ function creerListingEntete($dossierDestination)
     array_multisort($colonne, SORT_DESC, $listeEnTete);
     fwrite($fichierEnTete, json_encode($listeEnTete));
     fclose($fichierEnTete);
-    closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
+    closedir($repertoire);
     return null;
 }
 

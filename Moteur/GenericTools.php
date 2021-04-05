@@ -2,17 +2,15 @@
 
 function nettoyageDossierDestinationHorsSousDossier($dossierDestination)
 {
-    $repertoire = opendir($dossierDestination); // On définit le répertoire dans lequel on souhaite travailler.
+    $repertoire = opendir($dossierDestination);
     while (false !== ($fichier = readdir($repertoire))) // On lit chaque fichier du répertoire dans la boucle.
     {
-        $chemin = $dossierDestination . '/' . $fichier; // On définit le chemin du fichier à effacer.
-
-        // Si le fichier n'est pas un répertoire…
+        $chemin = $dossierDestination . '/' . $fichier;
         if ($fichier != '..' && $fichier != '.' && !is_dir($fichier)) {
             unlink($chemin); // On efface.
         }
     }
-    closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
+    closedir($repertoire);
     return null;
 }
 
@@ -21,7 +19,7 @@ function calculInformationLongueurLecture($contenu_article)
     $chaine_retour = '';
     // Arrondi à l'entier supérieur du nombre de minutes nécessaires pour lire l'article
     $minute_lecture = ceil(str_word_count(strip_tags($contenu_article)) / MOT_PAR_MINUTE);
-    // Si l'utilisateur à choisi d'assortir son temps de lecture d'emji, on en rajoute.
+    // Si l'utilisateur à choisi d'assortir son temps de lecture d'emoji, on en rajoute.
     if (EMOJI_LONGUEUR_LECTURE) {
         $compteur = $minute_lecture;
         if ($compteur < 25) {
@@ -110,15 +108,13 @@ function copierDossierEtSousDossier($origine, $destination)
 
 function copierImage($origine, $destination, $extension)
 {
-    // Définition de la largeur et de la hauteur maximale
     $largeurMax = LARGEUR_MAX_IMAGES_EN_PIXEL;
     $hauteurMax = HAUTEUR_MAX_EN_PIXEL;
-    // Cacul des nouvelles dimensions
+
     list($largeurOrigine, $hauteurOrigine) = getimagesize($origine);
     $copieEffectuee = false;
 
     if ($largeurMax > $largeurOrigine) {
-
         //Pas besoin de redimensionner si la largeur est déjà bonne
         switch ($extension) {
             case "gif":

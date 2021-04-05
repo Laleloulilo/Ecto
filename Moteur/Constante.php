@@ -1,6 +1,4 @@
 <?php
-
-
 // Constantes de paramétrage utilisateur
 
 //Gestion de la vitesse de lecture moyenne
@@ -23,12 +21,13 @@ define('NOMBRE_DE_SECONDES_AVANT_MISE_A_JOUR', 1);
 define('ERREUR_AUTORISES', array("403","404"));
 
 // Constantes techniques
+
 define('MODE_DEBUG', false);
 define('REDIRECTION_HTTPS', false);
 define('LARGEUR_MAX_IMAGES_EN_PIXEL', 700);
 define('HAUTEUR_MAX_EN_PIXEL', 10000);
-define('NIVEAU_COMPRESSION_IMAGES_JPG', 75); //0 à 100 (100 étant aucune compression)
-define('NIVEAU_COMPRESSION_IMAGES_PNG', 1); //0 à 9 (0 étant aucune compression)
+define('NIVEAU_COMPRESSION_IMAGES_JPG', 75); // 0 à 100 (100 étant aucune compression)
+define('NIVEAU_COMPRESSION_IMAGES_PNG', 1); // 0 à 9 (0 étant aucune compression)
 define('CATEGORIE_PAR_DEFAUT', 'Notes');
 define('LOCALISATION_TEMPLATE', '../Moteur/Template/template.php');
 define('LOCALISATION_TEMPLATE_CORPS_ARTICLE', '../Moteur/Template/templateCorpsPage.php');
@@ -55,7 +54,7 @@ define('NOM_FICHIER_SITEMAP', 'sitemap.xml');
 //Choix de la zone pour l'affichage des heures
 define('ZONE_TEMPORELLE_HEURE', 'fr_FR');
 define('FORMAT_DATE', '%e %B %G');
-//Pour controle théorique fichier markdown
+//Pour contrôle théorique fichier markdown
 define('NOMBRE_BLOC_FICHIER_MARKDOWN', 2); //Ici le bloc d'en-tête et le bloc de contenu
 define('DELIMITEUR_BLOCS_MARKDOWN', '---');
 define('NOM_FICHIER_VERIFICATION_TIMESTAMP', '../Moteur/timestamp.php');
