@@ -90,7 +90,7 @@ function verifierNecessiteMiseAJour($timestampDerniereMaj)
     $getLastModDirTemplate = connaitreDateDerniereModificationDossier(REPERTOIRE_TEMPLATE);
     $getLastModDirPHP = connaitreDateDerniereModificationDossier(REPERTOIRE_CODE_PHP);
     $getLastModDir = max($getLastModDirBillets, $getLastModDirPHP, $getLastModDirTemplate);
-    return ($timestampDerniereMaj - $getLastModDir < 0);
+    //$getLastModDir = max($getLastModDirPHP, $getLastModDirTemplate);
     Logger::info("Date de dernière modification : ".$getLastModDir);
     Logger::info("Dernier Timestamp de mise à jour : ".$timestampDerniereMaj);
     $miseAJour=$timestampDerniereMaj - $getLastModDir < 0;
