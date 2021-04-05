@@ -9,7 +9,8 @@ define('MOT_PAR_MINUTE', 200);
 define('NOM_DU_SITE', 'Ecto');
 define('NOM_PAGE_ACCUEIL', 'Accueil');
 define('DESCRIPTION_PAGE_ACCUEIL', 'Mini-CMS, 0 dépendance, - de 100 ko, Markdown, Déploiement Copier/coller');
-define('NOM_IMAGE_OPEN_GRAPH','img-graph.jpg');
+define('NOM_IMAGE_OPEN_GRAPH','logo.png');
+define('NOM_IMAGE_FAVICON','favicon.png');
 //Gestion du sitemap
 define('ADRESSE_EXACTE_SITE', 'http://localhost/Ecto/Rendu');
 // La constante EMOJI_LONGUEUR_LECTURE est utilisée pour savoir si le temps de lecture sera accompagné d'emoji

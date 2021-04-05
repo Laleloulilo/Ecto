@@ -8,7 +8,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<?=ADRESSE_EXACTE_SITE ?>" />
     <meta property="og:image" content="<?=ADRESSE_EXACTE_SITE.'/'.REPERTOIRE_IMAGE.'/'.NOM_IMAGE_OPEN_GRAPH ?>" />
-    <link rel="icon" type="image/png" href="./Images/favicon.png"/>
+    <link rel="icon" type="image/png" href="<?=ADRESSE_EXACTE_SITE.'/'.REPERTOIRE_IMAGE.'/'.NOM_IMAGE_FAVICON ?>"/>
     <link rel="stylesheet" type="text/css" href="./style/main.css" onload="this.media='all'"/>
     <title><?= NOM_PAGE_ACCUEIL ?> : <?= NOM_DU_SITE ?></title>
 </head>
