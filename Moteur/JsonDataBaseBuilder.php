@@ -134,7 +134,7 @@ function creerListingEntete($dossierDestination)
 
     $colonne = array_column($listeEnTete, 'timestamp_date');
     // On ordonne le fichier d'en-tête par date
-    $resultat = array_multisort($colonne, SORT_DESC, $listeEnTete);
+    array_multisort($colonne, SORT_DESC, $listeEnTete);
     fwrite($fichierEnTete, json_encode($listeEnTete));
     fclose($fichierEnTete);
     closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
