@@ -98,7 +98,6 @@ function copierDossierEtSousDossier($origine, $destination)
             } else {
                 $extensionImage = array("jpg", "jpeg", "gif", "png");
                 $extension = pathinfo($elementOrigine, PATHINFO_EXTENSION);
-
                 if (in_array($extension, $extensionImage)) {
                     $copieReussie = copierImage($origine . '/' . $elementOrigine, $destination . '/' . $elementOrigine, $extension);
                 } else {
@@ -120,10 +119,25 @@ function copierImage($origine, $destination, $extension)
     $hauteurMax = 10000;
     // Cacul des nouvelles dimensions
     list($largeurOrigine, $hauteurOrigine) = getimagesize($origine);
+    $copieEffectuee = false;
 
     if ($largeurMax > $largeurOrigine) {
+
         //Pas besoin de redimensionner si la largeur est déjà bonne
-        return copy($origine, $destination);
+        switch ($extension) {
+            case "gif":
+                $nouvelleImage = imagecreatefromgif($origine);
+                $copieEffectuee=imagegif($nouvelleImage, $destination);
+                break;
+            case "png":
+                $nouvelleImage = imagecreatefrompng($origine);
+                $copieEffectuee=imagepng($nouvelleImage, $destination, NIVEAU_COMPRESSION_IMAGES_PNG);
+                break;
+            default :
+                $nouvelleImage = imageCreateFromJpeg($origine);
+                $copieEffectuee=imagejpeg($nouvelleImage, $destination, NIVEAU_COMPRESSION_IMAGES_JPG);
+        }
+        return $copieEffectuee;
     }
 
     $ratio = $largeurOrigine / $hauteurOrigine;
@@ -149,18 +163,18 @@ function copierImage($origine, $destination, $extension)
     imagecopyresampled($imageRedim, $nouvelleImage, 0, 0, 0, 0, $largeurMax, $hauteurMax, $largeurOrigine, $hauteurOrigine);
     switch ($extension) {
         case "gif":
-            imagegif($imageRedim, $destination);
+            $copieEffectuee=imagegif($imageRedim, $destination);
             break;
         case "png":
-            imagepng($imageRedim, $destination);
+            $copieEffectuee=imagepng($imageRedim, $destination, NIVEAU_COMPRESSION_IMAGES_PNG);
             break;
         default :
-            imagejpeg($imageRedim, $destination);
+            $copieEffectuee=imagejpeg($imageRedim, $destination, NIVEAU_COMPRESSION_IMAGES_JPG);
     }
 
     // Libération de la mémoire
     imageDestroy($imageRedim);
-    return true;
+    return $copieEffectuee;
 }
 
 

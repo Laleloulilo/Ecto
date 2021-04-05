@@ -12,6 +12,7 @@ setlocale(LC_TIME, ZONE_TEMPORELLE_HEURE);
 
 function processusGlobalGenerationSite()
 {
+    dossierExistantOuLeCreer(REPERTOIRE_LOGS);
     Logger::notice("Processus de mise à jour entamé.");
     if (analyseRefraichissementDelaiMiseAJourDonnee()) {
         Logger::info("Mise à jour démarrée");
@@ -46,6 +47,7 @@ function processusGlobalGenerationSite()
         creationRobotsTxT(REPERTOIRE_DESTINATION_RENDU_PHP);
         Logger::info("Création du fichier .htaccess.");
         creationHtaccess(REPERTOIRE_DESTINATION_RENDU_PHP);
+        miseAJourTimestamp();
     }
 }
 
@@ -89,6 +91,11 @@ function verifierNecessiteMiseAJour($timestampDerniereMaj)
     $getLastModDirPHP = connaitreDateDerniereModificationDossier(REPERTOIRE_CODE_PHP);
     $getLastModDir = max($getLastModDirBillets, $getLastModDirPHP, $getLastModDirTemplate);
     return ($timestampDerniereMaj - $getLastModDir < 0);
+    Logger::info("Date de dernière modification : ".$getLastModDir);
+    Logger::info("Dernier Timestamp de mise à jour : ".$timestampDerniereMaj);
+    $miseAJour=$timestampDerniereMaj - $getLastModDir < 0;
+    Logger::info("Mise à jour à faire ? ".$miseAJour);
+    return ($miseAJour);
 }
 
 
